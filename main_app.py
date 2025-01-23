@@ -230,29 +230,33 @@ def main():
             
             st.subheader("Upload Your Files Here!")
             uploaded_file = st.file_uploader("Choose a file 📑", type=["pdf"])
-            if uploaded_file is not None:
-                with st.spinner("📤 Uploading to Google Drive..."):
-                    upload_to_drive(uploaded_file, username)  # Upload to Google Drive
-                
-                st.session_state.content = pdf_extraction(uploaded_file)
-                
-                # Display chat history before showing the input box
-                display_chat_history()
-                
-                if prompt := st.chat_input("Ask your question here:"):
-                    st.session_state.chat_history.append({"role": "user", "content": prompt})
-                    with st.chat_message("user"):
-                        st.markdown(prompt)
-                    with st.chat_message("assistant"):
-                        with st.spinner("Generating response..."):
-                            retrieved_chunks = retrieving_process(st.session_state.content, prompt)
-                            st.toast("Retrieved chunks")
-                            reranked_docs = rerank_documents(retrieved_chunks, prompt)
-                            st.toast("Reranked documents")
-                            response = EC_ChatBot(reranked_docs, prompt)
-                            st.toast("Response generated")
-                    st.session_state.chat_history.append({"role": "assistant", "content": response})
-                    st.rerun()
+            
+            if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
+                if uploaded_file is not None:
+                    with st.spinner("📤 Uploading to Google Drive..."):
+                        upload_to_drive(uploaded_file, username)  # Upload to Google Drive
+
+                    # Store filename to avoid reprocessing
+                    st.session_state.uploaded_filename = uploaded_file.name
+                    st.session_state.content = pdf_extraction(uploaded_file)
+                    st.success("File uploaded and processed successfully!")
+                    # Display chat history before showing the input box
+                    display_chat_history()
+                    
+                    if prompt := st.chat_input("Ask your question here:"):
+                        st.session_state.chat_history.append({"role": "user", "content": prompt})
+                        with st.chat_message("user"):
+                            st.markdown(prompt)
+                        with st.chat_message("assistant"):
+                            with st.spinner("Generating response..."):
+                                retrieved_chunks = retrieving_process(st.session_state.content, prompt)
+                                st.toast("Retrieved chunks")
+                                reranked_docs = rerank_documents(retrieved_chunks, prompt)
+                                st.toast("Reranked documents")
+                                response = EC_ChatBot(reranked_docs, prompt)
+                                st.toast("Response generated")
+                        st.session_state.chat_history.append({"role": "assistant", "content": response})
+                        st.rerun()
             else:
                 st.warning("Please upload a PDF file to proceed.")
         
