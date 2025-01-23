@@ -10,6 +10,7 @@ from FlagEmbedding import FlagReranker
 from dotenv import load_dotenv
 import os, sys, re, tempfile
 import pymupdf4llm, pymupdf
+import streamlit as st
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -18,7 +19,7 @@ load_dotenv()
 path = r"C:\Users\siva3\OneDrive\Documents\Naveen Kumar's Files\VSCode_Stuffs\LegalGPT\EC_Documents"
 sys.path.append(path)
 
-groq_api_key = os.getenv('GROQ_API_KEY')
+groq_api_key = st.secrets["general"]["GROQ_API_KEY"]
 model = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.1-70b-versatile", temperature=0) # llama-3.3-70b-versatile | llama-3.1-8b-instant
 embeddings = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2') # ai4bharat/indic-bert | all-mpnet-base-v1
 reranker = FlagReranker('BAAI/bge-reranker-base', use_fp16=False) # Re-ranker model
