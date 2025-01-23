@@ -231,8 +231,8 @@ def main():
             st.subheader("Upload Your Files Here!")
             uploaded_file = st.file_uploader("Choose a file 📑", type=["pdf"])
             
-            if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
-                if uploaded_file is not None:
+            if uploaded_file is not None:
+                if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
                     with st.spinner("📤 Uploading to Google Drive..."):
                         upload_to_drive(uploaded_file, username)  # Upload to Google Drive
 
@@ -240,8 +240,12 @@ def main():
                     st.session_state.uploaded_filename = uploaded_file.name
                     st.session_state.content = pdf_extraction(uploaded_file)
                     st.success("File uploaded and processed successfully!")
-                    # Display chat history before showing the input box
-                    display_chat_history()
+                    
+                    # Ensure the content is available before displaying chat history
+                    if 'content' in st.session_state:
+                        display_chat_history()
+                    else:
+                        st.info("Please upload and process the document first.")
                     
                     if prompt := st.chat_input("Ask your question here:"):
                         st.session_state.chat_history.append({"role": "user", "content": prompt})
