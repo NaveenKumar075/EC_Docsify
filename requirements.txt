@@ -1,4 +1,4 @@
-langchain
+langchain==0.3.14
 langchain-community
 langchain-experimental
 langchain-groq
