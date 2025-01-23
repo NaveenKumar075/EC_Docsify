@@ -10,6 +10,7 @@ from FlagEmbedding import FlagReranker
 from dotenv import load_dotenv
 import os, sys, re, tempfile
 import pymupdf4llm, pymupdf
+import streamlit as st
 import warnings
 warnings.filterwarnings('ignore')
 
