@@ -1,6 +1,7 @@
 import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
+import tempfile
 from io import BytesIO
 from streamlit_lottie import st_lottie
 from streamlit_option_menu import option_menu
@@ -22,9 +23,15 @@ database = firebase.database()
 
 # Google Drive API Setup
 parent_folder_id = st.secrets["gdrive"]["parent_folder_id"]
-SERVICE_ACCOUNT_FILE = json.loads(st.secrets["gdrive"]["service_account_json"])
+service_account_json_str = st.secrets["gdrive"]["service_account_json"]
+
+# Write the JSON to a temporary file
+with tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".json") as temp_file:
+    temp_file.write(service_account_json_str)
+    SERVICE_ACCOUNT_FILE_TEMP = temp_file.name
+
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE_TEMP, scopes=SCOPES)
 drive_service = build('drive', 'v3', credentials=credentials)
 
 
