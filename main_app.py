@@ -241,29 +241,29 @@ def main():
                     st.session_state.content = pdf_extraction(uploaded_file)
                     st.success("File uploaded and processed successfully!")
                     
-                    # Ensure the content is available before displaying chat history
-                    if 'content' in st.session_state:
-                        display_chat_history()
-                    else:
-                        st.info("Please upload and process the document first.")
+            # Ensure the content is available before displaying chat history and input box
+            if 'content' in st.session_state:
+                display_chat_history()
                     
-                    if prompt := st.chat_input("Ask your question here:"):
-                        st.session_state.chat_history.append({"role": "user", "content": prompt})
-                        with st.chat_message("user"):
-                            st.markdown(prompt)
-                        with st.chat_message("assistant"):
-                            with st.spinner("Generating response..."):
-                                retrieved_chunks = retrieving_process(st.session_state.content, prompt)
-                                st.toast("Retrieved chunks")
-                                reranked_docs = rerank_documents(retrieved_chunks, prompt)
-                                st.toast("Reranked documents")
-                                response = EC_ChatBot(reranked_docs, prompt)
-                                st.toast("Response generated")
-                        st.session_state.chat_history.append({"role": "assistant", "content": response})
-                        st.rerun()
+                if prompt := st.chat_input("Ask your question here:"):
+                    st.session_state.chat_history.append({"role": "user", "content": prompt})
+                    with st.chat_message("user"):
+                        st.markdown(prompt)
+                    with st.chat_message("assistant"):
+                        with st.spinner("Generating response..."):
+                            retrieved_chunks = retrieving_process(st.session_state.content, prompt)
+                            st.toast("Retrieved chunks")
+                            reranked_docs = rerank_documents(retrieved_chunks, prompt)
+                            st.toast("Reranked documents")
+                            response = EC_ChatBot(reranked_docs, prompt)
+                            st.toast("Response generated")
+                    st.session_state.chat_history.append({"role": "assistant", "content": response})
+                    st.rerun()
             else:
+                st.info("Please upload and process the document first.")
+
+            if uploaded_file is None:
                 st.warning("Please upload a PDF file to proceed.")
-        
         
         # Logout function          
         if st.sidebar.button("Logout"):
