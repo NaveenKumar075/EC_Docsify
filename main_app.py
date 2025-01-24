@@ -180,7 +180,7 @@ def main():
         time.sleep(2)
 
     if check_authentication():
-        st.success(f"Welcome back, {st.session_state['user']['username']}!")
+        # st.success(f"Welcome back, {st.session_state['user']['username']}!")
         if st.button("Logout"):
             logout()
     else:
