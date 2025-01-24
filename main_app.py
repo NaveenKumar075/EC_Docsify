@@ -2,6 +2,7 @@ import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
 import tempfile
+from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
 from streamlit_option_menu import option_menu
@@ -52,6 +53,7 @@ def initialize_session_state():
 initialize_session_state()
 
 
+# To display the chat conversations
 def display_chat_history():
     for message in st.session_state.chat_history:
         with st.chat_message(message['role']):
@@ -106,19 +108,20 @@ def login(email, password):
         user = auth.sign_in_with_email_and_password(email, password)
         token = user['idToken']
         refresh_token = user['refreshToken']
+        expires_at = datetime.utcnow() + timedelta(seconds=3600) # Token expiry time
         st.session_state['authenticated'] = True
         st.session_state['user'] = {
-            **user, 
-            'localId': user['localId'],  
-            'idToken': token,  
-            'refreshToken': refresh_token,  
-            'expiresAt': datetime.utcnow() + timedelta(seconds=3600),  # Token expiry time
+            'email': email,
+            'localId': user['localId'],
+            'idToken': token,
+            'refreshToken': refresh_token,
+            'expiresAt': expires_at,
+            'username': None  # Placeholder to avoid KeyError
         }
-        if 'username' not in st.session_state['user']:
-            user_data = database.child(user['localId']).get().val()
-            username = user_data.get("Username", "Unknown User")
-            st.session_state['user']['username'] = username
-        st.success("Logged in successfully!")
+        user_data = database.child(user['localId']).get().val()
+        username = user_data.get("Username", "Unknown User")
+        st.session_state['user']['username'] = username
+        st.success("Logged in successfully as {username}!")
         st.rerun()
     except Exception as e:
         try:
@@ -131,7 +134,7 @@ def login(email, password):
 
 def logout():
     st.session_state['authenticated'] = False
-    st.session_state['user'] = None
+    st.session_state['user'] = {} # Clear user data safely
     st.success("Logged out successfully!")
     st.rerun()
     
@@ -176,11 +179,12 @@ def main():
         initial_sidebar_state="expanded"
     )
     st.title("EC Docsify 🤖")
+    
     with HyLoader('', Loaders.pretty_loaders,index=[0]):
         time.sleep(2)
 
     if check_authentication():
-        # st.success(f"Welcome back, {st.session_state['user']['username']}!")
+        st.sidebar.success(f"Welcome back, {st.session_state['user'].get('username', 'User')}!")
         if st.button("Logout"):
             logout()
     else:
@@ -205,14 +209,15 @@ def main():
                             signup(email, password, username)
                             st.info("Please do login to access your account.")
                         else:
-                            st.warning("Please provide a nickname to complete the signup.")
+                            st.warning("Please provide a username to complete the signup.")
     
         else:
-            username = st.session_state['user']['username']
+            username = st.session_state['user'].get('username', 'User')
             st.sidebar.success(f"Welcome, {username}")
             
             st.title("Welcome to EC Docsify!")
             st.write("This is the new interface for logged-in users.")
+            
             with st.sidebar:
                 st.sidebar.markdown(
                 """
