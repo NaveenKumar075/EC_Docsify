@@ -121,7 +121,7 @@ def login(email, password):
         user_data = database.child(user['localId']).get().val()
         username = user_data.get("Username", "Unknown User")
         st.session_state['user']['username'] = username
-        st.success("Logged in successfully as {username}!")
+        st.success(f"Logged in successfully as {username}!")
         st.rerun()
     except Exception as e:
         try:
@@ -179,15 +179,12 @@ def main():
         initial_sidebar_state="expanded"
     )
     st.title("EC Docsify 🤖")
-    
     with HyLoader('', Loaders.pretty_loaders,index=[0]):
         time.sleep(2)
 
     if check_authentication():
         st.sidebar.success(f"Welcome back, {st.session_state['user'].get('username', 'User')}!")
-        if st.button("Logout"):
-            logout()
-    else:
+        
         if not st.session_state.get('authenticated', False):
             st.sidebar.header("Authentication")
             choice = st.sidebar.radio("Choose an option", ["Login", "Signup"])
