@@ -108,7 +108,7 @@ def login(email, password):
         refresh_token = user['refreshToken']
         st.session_state['authenticated'] = True
         st.session_state['user'] = {
-            'email': email,  
+            **user, 
             'localId': user['localId'],  
             'idToken': token,  
             'refreshToken': refresh_token,  
@@ -120,7 +120,6 @@ def login(email, password):
             st.session_state['user']['username'] = username
         st.success("Logged in successfully!")
         st.rerun()
-    
     except Exception as e:
         try:
             error_response = json.loads(e.args[1]) # Firebase's error response is in args[1]
