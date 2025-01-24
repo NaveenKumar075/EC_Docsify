@@ -84,13 +84,15 @@ def signup(email, password, username):
         return
     try:
         user = auth.create_user_with_email_and_password(email, password)
-        database.child(user['localId']).child("Username").set(username)
-        database.child(user['localId']).child("ID").set(user['localId'])
+        # database.child(user['localId']).child("Username").set(username)
+        # database.child(user['localId']).child("ID").set(user['localId'])
+        database.child(user['localId']).set({"Username": username, "ID": user['localId']})
         st.session_state['user'] = {
             'email': email,
-            'username': username
+            'username': username,
+            'localId': user['localId']
         }
-        st.success("Account created successfully!")
+        st.success("Account created successfully! Please login.")
         st.balloons()
     except Exception as e:
         try:
@@ -106,18 +108,16 @@ def login(email, password):
         return
     try:
         user = auth.sign_in_with_email_and_password(email, password)
-        token = user['idToken']
-        refresh_token = user['refreshToken']
-        expires_at = datetime.utcnow() + timedelta(seconds=3600) # Token expiry time
-        st.session_state['authenticated'] = True
-        st.session_state['user'] = {
-            'email': email,
-            'localId': user['localId'],
-            'idToken': token,
-            'refreshToken': refresh_token,
-            'expiresAt': expires_at,
-            'username': None  # Placeholder to avoid KeyError
-        }
+        store_auth_data(user)
+        # st.session_state['authenticated'] = True
+        # st.session_state['user'] = {
+        #     'email': email,
+        #     'localId': user['localId'],
+        #     'idToken': token,
+        #     'refreshToken': refresh_token,
+        #     'expiresAt': expires_at,
+        #     'username': None  # Placeholder to avoid KeyError
+        # }
         user_data = database.child(user['localId']).get().val()
         username = user_data.get("Username", "Unknown User")
         st.session_state['user']['username'] = username
@@ -135,24 +135,39 @@ def login(email, password):
 def logout():
     st.session_state['authenticated'] = False
     st.session_state['user'] = {} # Clear user data safely
+    st.session_state.clear()
     st.success("Logged out successfully!")
     st.rerun()
+
+def store_auth_data(user):
+    expires_at = datetime.utcnow() + timedelta(seconds=3600)  # Set token expiry time
+    st.session_state['authenticated'] = True
+    st.session_state['user'] = {
+        'email': user['email'],
+        'localId': user['localId'],
+        'idToken': user['idToken'],
+        'refreshToken': user['refreshToken'],
+        'expiresAt': expires_at.timestamp(),  # Use timestamp for better comparisons
+        'username': database.child(user['localId']).child("Username").get().val()
+    }
     
 
 # Function to check if user session is still valid
 def check_authentication():
-    if 'user' in st.session_state and st.session_state['user'] and 'idToken' in st.session_state['user']:
-        if st.session_state['user']['expiresAt'] > datetime.utcnow():
+    user_data = st.session_state.get('user', {})
+    if user_data and 'idToken' in user_data:
+        expires_at = user_data.get('expiresAt', 0)
+        if datetime.utcnow().timestamp() < expires_at:
             return True
         else:
             try:
-                new_token = auth.refresh(st.session_state['user']['refreshToken']) # Refresh the token if expired
+                new_token = auth.refresh(user_data['refreshToken'])
                 st.session_state['user']['idToken'] = new_token['idToken']
-                st.session_state['user']['expiresAt'] = datetime.utcnow() + timedelta(seconds=3600)
+                st.session_state['user']['expiresAt'] = datetime.utcnow().timestamp() + 3600
                 return True
             except Exception:
-                st.session_state.clear()
                 st.warning("Session expired. Please log in again.")
+                st.session_state.clear()
                 return False
     return False
 
