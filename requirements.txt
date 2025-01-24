@@ -12,6 +12,7 @@ shortuuid
 streamlit
 streamlit_option_menu
 streamlit_lottie
+streamlit_js_eval
 hydralit
 google-api-python-client
 google-auth
