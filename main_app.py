@@ -104,7 +104,6 @@ def login(email, password):
         return
     try:
         user = auth.sign_in_with_email_and_password(email, password)
-
         token = user['idToken']
         refresh_token = user['refreshToken']
         st.session_state['authenticated'] = True
@@ -114,7 +113,6 @@ def login(email, password):
             'idToken': token,  
             'refreshToken': refresh_token,  
             'expiresAt': datetime.utcnow() + timedelta(seconds=3600),  # Token expiry time
-            'user': user  # Storing the full Firebase user object
         }
         if 'username' not in st.session_state['user']:
             user_data = database.child(user['localId']).get().val()
@@ -122,6 +120,7 @@ def login(email, password):
             st.session_state['user']['username'] = username
         st.success("Logged in successfully!")
         st.rerun()
+    
     except Exception as e:
         try:
             error_response = json.loads(e.args[1]) # Firebase's error response is in args[1]
