@@ -39,7 +39,7 @@ drive_service = build('drive', 'v3', credentials=credentials)
 def initialize_session_state():
     defaults = {
         'authenticated': False,
-        'user': None,
+        'user': {}, # To store the user details
         'choice': None,
         'content': None,
         'meta_details': None,
@@ -140,7 +140,7 @@ def logout():
 
 # Function to check if user session is still valid
 def check_authentication():
-    if 'user' in st.session_state and 'idToken' in st.session_state['user']:
+    if 'user' in st.session_state and st.session_state['user'] and 'idToken' in st.session_state['user']:
         if st.session_state['user']['expiresAt'] > datetime.utcnow():
             return True
         else:
