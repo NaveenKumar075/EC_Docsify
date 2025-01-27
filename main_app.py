@@ -141,7 +141,7 @@ def login(email, password):
         st.error(f"Login failed due to: {error_message}")
 
 def logout():
-    cookie_controller.set("user_id", "", max_age=0) # Clear cookie by setting it to an empty value with a past expiration
+    cookie_controller.set("user_session", "", max_age=0) # Clear cookie by setting it to an empty value with a past expiration
     st.session_state['authenticated'] = False
     st.session_state['user'] = {} # Clear user data safely
     st.session_state.clear()
@@ -160,16 +160,16 @@ def store_auth_data(user):
         'expiresAt': expires_at.timestamp(),  # Use timestamp for better comparisons
         'username': database.child(user['localId']).child("Username").get().val()
     }
-    
 
-# Function to check session using cookies
+# Function to check if the session exists
 def check_session():
     user_cookie = cookie_controller.get("user_session")
     if user_cookie:
         st.session_state['authenticated'] = True
         st.session_state['user'] = user_cookie
-        st.success("Session restored successfully!")
-
+    else:
+        st.session_state['authenticated'] = False
+        st.session_state['user'] = {}
 
 # Function to store session in cookies
 def store_session(user_data):
@@ -177,6 +177,7 @@ def store_session(user_data):
     st.session_state['authenticated'] = True
     st.session_state['user'] = user_data
     st.success("Login successful!")
+    time.sleep(1)
     st.rerun()
 
 
@@ -218,6 +219,8 @@ def main():
             if submit_button:
                 if choice == "Login":
                     login(email, password)
+                    user_data = {"email": email, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(days=1)).isoformat()}
+                    store_session(user_data)
                 elif choice == "Signup":
                     if username:
                         signup(email, password, username)
