@@ -124,7 +124,7 @@ def login(email, password):
         #         "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
         store_session(st.session_state['user'])  # Store session in cookies
         user_data = database.child(user['localId']).get().val()
-        username = user_data.get("username", "Unknown User")
+        username = user_data.get("Username", "Unknown User")
         # st.session_state['user']['Username'] = username
         st.success(f"Logged in successfully as {username}!")
         st.rerun()
