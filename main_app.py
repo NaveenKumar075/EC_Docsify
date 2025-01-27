@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
 from streamlit_option_menu import option_menu
+from streamlit_cookies_controller import CookieController
 from hydralit_components import HyLoader, Loaders
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
@@ -20,6 +21,7 @@ firebase_config = st.secrets["firebase"]
 firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 database = firebase.database()
+cookie_controller = CookieController() # Initialize the cookies controller
 
 
 # Google Drive API Setup
@@ -133,10 +135,12 @@ def login(email, password):
         st.error(f"Login failed due to: {error_message}")
 
 def logout():
+    cookie_controller.set("user_id", "", max_age=0) # Clear cookie by setting it to an empty value with a past expiration
     st.session_state['authenticated'] = False
     st.session_state['user'] = {} # Clear user data safely
     st.session_state.clear()
     st.success("Logged out successfully!")
+    time.sleep(1)
     st.rerun()
 
 def store_auth_data(user):
@@ -152,24 +156,22 @@ def store_auth_data(user):
     }
     
 
-# Function to check if user session is still valid
-def check_authentication():
-    user_data = st.session_state.get('user', {})
-    if user_data and 'idToken' in user_data:
-        expires_at = user_data.get('expiresAt', 0)
-        if datetime.utcnow().timestamp() < expires_at:
-            return True
-        else:
-            try:
-                new_token = auth.refresh(user_data['refreshToken'])
-                st.session_state['user']['idToken'] = new_token['idToken']
-                st.session_state['user']['expiresAt'] = datetime.utcnow().timestamp() + 3600
-                return True
-            except Exception:
-                st.warning("Session expired. Please log in again.")
-                st.session_state.clear()
-                return False
-    return False
+# Function to check session using cookies
+def check_session():
+    user_cookie = cookie_controller.get("user_session")
+    if user_cookie:
+        st.session_state['authenticated'] = True
+        st.session_state['user'] = user_cookie
+        st.success("Session restored successfully!")
+
+
+# Function to store session in cookies
+def store_session(user_data):
+    cookie_controller.set("user_session", user_data, max_age=3600)  # 1 hour expiration
+    st.session_state['authenticated'] = True
+    st.session_state['user'] = user_data
+    st.success("Login successful!")
+    st.rerun()
 
 
 # Google Drive upload function
@@ -197,10 +199,9 @@ def main():
     with HyLoader('', Loaders.pretty_loaders,index=[0]):
         time.sleep(2)
 
-    # Check authentication at the beginning
-    is_authenticated = check_authentication()
+    check_session()
         
-    if not is_authenticated or not st.session_state.get('authenticated', False):
+    if not st.session_state.get('authenticated', False):
         st.sidebar.header("Authentication")
         choice = st.sidebar.radio("Choose an option", ["Login", "Signup"])
         with st.sidebar.form(key="auth_form"):
