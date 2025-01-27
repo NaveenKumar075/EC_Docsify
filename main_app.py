@@ -117,6 +117,8 @@ def login(email, password):
     try:
         user = auth.sign_in_with_email_and_password(email, password)
         store_auth_data(user)
+        user_data = {"email": email, "username": user['localId'], "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
+        store_session(user_data)  # Store session in cookies
         # st.session_state['authenticated'] = True
         # st.session_state['user'] = {
         #     'email': email,
@@ -199,7 +201,6 @@ def main():
     st.title("EC Docsify 🤖")
     with HyLoader('', Loaders.pretty_loaders,index=[0]):
         time.sleep(2)
-
     check_session()
         
     if not st.session_state.get('authenticated', False):
@@ -217,10 +218,7 @@ def main():
             submit_button = st.form_submit_button(label="Submit")
             if submit_button:
                 if choice == "Login":
-                    login(email, password)
-                    user_data = {"email": email, "username": username, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
-                    store_session(user_data)
-                
+                    login(email, password)                
                 elif choice == "Signup":
                     if username:
                         signup(email, password, username)
