@@ -124,7 +124,7 @@ def login(email, password):
         #         "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
         store_session(st.session_state['user'])  # Store session in cookies
         user_data = database.child(user['localId']).get().val()
-        username = user_data.get("Username", "Unknown User")
+        username = user_data.get("username", "Unknown User")
         # st.session_state['user']['Username'] = username
         st.success(f"Logged in successfully as {username}!")
         st.rerun()
@@ -157,6 +157,16 @@ def store_auth_data(user):
         'expiresAt': expires_at.timestamp(),  # Use timestamp for better comparisons
         'username': database.child(user['localId']).child("Username").get().val()
     }
+    store_session(st.session_state['user'])
+
+# Function to store session in cookies
+def store_session(user_data):
+    cookie_controller.set("user_session", user_data, max_age=3600)  # 1 hour expiration
+    st.session_state['authenticated'] = True
+    st.session_state['user'] = user_data
+    time.sleep(1)
+    if not st.session_state.get('authenticated', False):
+        st.rerun()
 
 # Function to check session from cookies
 def check_session():
@@ -167,14 +177,6 @@ def check_session():
     else:
         st.session_state['authenticated'] = False
         st.session_state['user'] = {}
-
-# Function to store session in cookies
-def store_session(user_data):
-    cookie_controller.set("user_session", user_data, max_age=3600)  # 1 hour expiration
-    st.session_state['authenticated'] = True
-    st.session_state['user'] = user_data
-    time.sleep(1)
-    st.rerun()
 
 
 # Google Drive upload function
