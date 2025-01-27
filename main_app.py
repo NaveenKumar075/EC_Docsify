@@ -16,6 +16,12 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
+st.set_page_config(
+        page_title="EC Docsify", 
+        page_icon="🚀", 
+        initial_sidebar_state="expanded")
+
+
 # Firebase configuration
 firebase_config = st.secrets["firebase"]
 firebase = pyrebase.initialize_app(firebase_config)
@@ -190,11 +196,6 @@ def upload_to_drive(file, username):
         
 # Streamlit UI setup
 def main():
-    st.set_page_config(
-        page_title="EC Docsify", 
-        page_icon="🚀", 
-        initial_sidebar_state="expanded"
-    )
     st.title("EC Docsify 🤖")
     with HyLoader('', Loaders.pretty_loaders,index=[0]):
         time.sleep(2)
