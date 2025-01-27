@@ -116,17 +116,12 @@ def login(email, password):
         return
     try:
         user = auth.sign_in_with_email_and_password(email, password)
-        store_auth_data(user)
-        # st.session_state['user'] = {
-        #         "email": email, 
-        #         "username": username, 
-        #         "token": "dummy_token", 
-        #         "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
-        store_session(st.session_state['user'])  # Store session in cookies
         user_data = database.child(user['localId']).get().val()
         username = user_data.get("Username", "Unknown User")
-        # st.session_state['user']['Username'] = username
         st.success(f"Logged in successfully as {username}!")
+        # st.session_state['user']['Username'] = username
+        store_auth_data(user)
+        store_session(st.session_state['user'])  # Store session in cookies
         st.rerun()
     except Exception as e:
         try:
