@@ -161,19 +161,12 @@ def store_auth_data(user):
         'username': database.child(user['localId']).child("Username").get().val()
     }
 
-# Function to check if the session exists
+# Function to check session from cookies
 def check_session():
-    user_cookie = cookie_controller.get("user_session")
-    if user_cookie:
-        # Validate user data if needed
-        if isinstance(user_cookie, dict) and 'email' in user_cookie:  # Example validation
-            st.session_state['authenticated'] = True
-            st.session_state['user'] = user_cookie
-        else:
-            # Invalid user data, clear session state
-            st.session_state['authenticated'] = False
-            st.session_state['user'] = {}
-            cookie_controller.set("user_session", "", max_age=0)  # Clear the invalid cookie
+    user_data = cookie_controller.get("user_session")
+    if user_data:
+        st.session_state['authenticated'] = True
+        st.session_state['user'] = user_data
     else:
         st.session_state['authenticated'] = False
         st.session_state['user'] = {}
@@ -225,8 +218,9 @@ def main():
             if submit_button:
                 if choice == "Login":
                     login(email, password)
-                    user_data = {"email": email, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
+                    user_data = {"email": email, "username": username, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
                     store_session(user_data)
+                
                 elif choice == "Signup":
                     if username:
                         signup(email, password, username)
