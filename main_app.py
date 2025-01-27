@@ -165,8 +165,15 @@ def store_auth_data(user):
 def check_session():
     user_cookie = cookie_controller.get("user_session")
     if user_cookie:
-        st.session_state['authenticated'] = True
-        st.session_state['user'] = user_cookie
+        # Validate user data if needed
+        if isinstance(user_cookie, dict) and 'email' in user_cookie:  # Example validation
+            st.session_state['authenticated'] = True
+            st.session_state['user'] = user_cookie
+        else:
+            # Invalid user data, clear session state
+            st.session_state['authenticated'] = False
+            st.session_state['user'] = {}
+            cookie_controller.set("user_session", "", max_age=0)  # Clear the invalid cookie
     else:
         st.session_state['authenticated'] = False
         st.session_state['user'] = {}
@@ -176,7 +183,6 @@ def store_session(user_data):
     cookie_controller.set("user_session", user_data, max_age=3600)  # 1 hour expiration
     st.session_state['authenticated'] = True
     st.session_state['user'] = user_data
-    st.success("Login successful!")
     time.sleep(1)
     st.rerun()
 
