@@ -117,17 +117,13 @@ def login(email, password):
     try:
         user = auth.sign_in_with_email_and_password(email, password)
         store_auth_data(user)
-        user_data = {"email": email, "username": user['localId'], "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
-        store_session(user_data)  # Store session in cookies
-        # st.session_state['authenticated'] = True
-        # st.session_state['user'] = {
-        #     'email': email,
-        #     'localId': user['localId'],
-        #     'idToken': token,
-        #     'refreshToken': refresh_token,
-        #     'expiresAt': expires_at,
-        #     'username': None  # Placeholder to avoid KeyError
-        # }
+        st.session_state['user'] = {
+                "email": email, 
+                "username": username, 
+                "token": "dummy_token", 
+                "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
+        store_session(st.session_state['user'])  # Store session in cookies
+
         user_data = database.child(user['localId']).get().val()
         username = user_data.get("Username", "Unknown User")
         st.session_state['user']['username'] = username
@@ -147,7 +143,7 @@ def logout():
     st.session_state['authenticated'] = False
     st.session_state['user'] = {} # Clear user data safely
     st.session_state.clear()
-    st.success("Logged out successfully!")
+    st.sidebar.success("Logged out successfully!")
     time.sleep(1)
     st.rerun()
 
