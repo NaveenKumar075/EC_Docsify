@@ -219,7 +219,7 @@ def main():
             if submit_button:
                 if choice == "Login":
                     login(email, password)
-                    user_data = {"email": email, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(days=1)).isoformat()}
+                    user_data = {"email": email, "token": "dummy_token", "expires_at": (datetime.utcnow() + timedelta(hours=1)).isoformat()}
                     store_session(user_data)
                 elif choice == "Signup":
                     if username:
