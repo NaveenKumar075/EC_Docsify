@@ -83,6 +83,12 @@ def rerank_documents(retrieved_docs, query):
         doc.metadata["rerank_score"] = score
 
     reranked_docs = sorted(retrieved_docs, key=lambda x: x.metadata["rerank_score"], reverse=True)
+
+    # Ensure unique IDs in reranked_docs
+    for doc in reranked_docs:
+        if "id" not in doc.metadata:
+            doc.metadata["id"] = str(uuid4())  # Add a unique ID if missing
+    
     return reranked_docs[:3]
 
 # * -------------------------------------- Meta Details Extracion --------------------------------------
