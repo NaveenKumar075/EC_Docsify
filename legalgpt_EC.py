@@ -8,6 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from FlagEmbedding import FlagReranker
 from dotenv import load_dotenv
+from uuid import uuid4
 import os, sys, re, tempfile
 import pymupdf4llm, pymupdf
 import streamlit as st
@@ -61,7 +62,7 @@ def pdf_extraction(pdf_path): # For table extraction alone!
 # * -------------------------------------- Chunking & Retrieving Process --------------------------------------
 
 def retrieving_process(content, query):
-    documents = [Document(page_content=text, metadata={"source": f"chunk {i+1}"}) for i, text in enumerate(content)]
+    documents = [Document(page_content=text, metadata={"source": f"chunk {i+1}", "id": str(uuid4())}) for i, text in enumerate(content)]
     bm25_retriever = BM25Retriever.from_documents(documents)
 
     vector_store = FAISS.from_documents(documents, embeddings)
@@ -131,7 +132,13 @@ def extract_meta_details(context):
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
 def EC_ChatBot(reranked_docs, user_query): # model
-    retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever()
+    for doc in reranked_docs:
+        if "id" not in doc.metadata:
+            doc.metadata["id"] = str(uuid4())  # Add a unique ID if missing
+    
+    retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever() # Create FAISS retriever
+    relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
+    context = "\n\n".join([doc.page_content for doc in relevant_docs]) # Format the context as a string
     
     prompt_template = ChatPromptTemplate.from_template("""
     You are an AI assistant specialized in answering user queries based on the content of Encumbrance Certificate (EC) documents.
@@ -157,7 +164,7 @@ def EC_ChatBot(reranked_docs, user_query): # model
 
     chat_chain = (
     {
-        "context": retriever,
+        "context": lambda x: context,
         "user_query": RunnablePassthrough()
     }
     | prompt_template
