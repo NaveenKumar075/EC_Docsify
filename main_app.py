@@ -276,13 +276,13 @@ def main():
             
             if uploaded_file is not None:
                 if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
-                    with st.spinner("📤 Uploading to Google Drive..."):
+                    with st.spinner("📤 Uploading in progress ..."):
                         upload_to_drive(uploaded_file, username)  # Upload to Google Drive
 
                     # Store filename to avoid reprocessing
                     st.session_state.uploaded_filename = uploaded_file.name
                     st.session_state.content = pdf_extraction(uploaded_file)
-                    st.success("File uploaded and processed successfully!")
+                    st.success("File processed successfully!")
                     
             # Ensure the content is available before displaying chat history and input box
             if 'content' in st.session_state:
@@ -293,13 +293,13 @@ def main():
                     with st.chat_message("user"):
                         st.markdown(prompt)
                     with st.chat_message("assistant"):
-                        with st.spinner("Generating response..."):
+                        with st.spinner("🌟 Generating Response..."):
                             retrieved_chunks = retrieving_process(st.session_state.content, prompt)
-                            st.toast("Retrieved chunks")
+                            st.toast("📑 Retrieved Chunks")
                             reranked_docs = rerank_documents(retrieved_chunks, prompt)
-                            st.toast("Reranked documents")
+                            st.toast("📚 Reranked Documents")
                             response = EC_ChatBot(reranked_docs, prompt)
-                            st.toast("Response generated")
+                            st.toast("✔️ Response Generated")
                     st.session_state.chat_history.append({"role": "assistant", "content": response})
                     st.rerun()
             else:
