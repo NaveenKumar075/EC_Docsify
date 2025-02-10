@@ -57,20 +57,20 @@ def get_transaction_details_prompt():
 def get_boundaries_prompt():
     return "Extract the Boundaries"
 
+def process_section(title, prompt):
+    return f"🔍 **Processed {title}**\n\n📝 **Prompt:** {prompt}"
+
+# Ensure session state is initialized
+if "processed_results" not in st.session_state:
+    st.session_state.processed_results = {section: None for section in summarization_sections.keys()}
+
 # Mapping sections to their respective processing functions
 process_functions = {
-    "General Information": lambda: process_section("General Information", get_general_info_prompt(), st.session_state.content),
+    "General Information (பொதுவான தகவல்)": lambda: process_section("General Information", get_general_info_prompt(), st.session_state.content),
     "Land Details (நில விவரங்கள்)": lambda: process_section("Land Details", get_land_details_prompt(), st.session_state.content),
     "Transaction Details (பரிமாற்ற விவரங்கள்)": lambda: process_section("Transaction Details", get_transaction_details_prompt(), st.session_state.content),
     "Boundaries (வரம்புகள்)": lambda: process_section("Boundaries", get_boundaries_prompt(), st.session_state.content)
 }
-
-# Initialize session state for processed results
-if "processed_results" not in st.session_state:
-    st.session_state.processed_results = None  # Store only one result at a time
-
-def process_section(title, prompt):
-    return f"🔍 Processed **{title}** with prompt: {prompt}"
 
 def run_summarization(extracted_text):
     st.write("### Select Sections to Summarize:")
@@ -78,13 +78,14 @@ def run_summarization(extracted_text):
     # Full-width 4-column layout
     cols = st.columns(4, gap="large")
     
-    for idx, section in enumerate(summarization_sections):
+    for idx, (section, process_fn) in enumerate(process_functions.items()):
         with cols[idx]:  # Place buttons inside columns
-            if st.markdown(f'<button class="stButton">{section}</button>', unsafe_allow_html=True):
-                st.session_state.processed_results = process_functions[section]()  # Store only the latest processed result
+            if st.button(section, use_container_width=True):
+                st.session_state.processed_results[section] = process_fn()  # Update only the respective section
 
     # Display results inside a container
     st.write("### Processed Results:")
     with st.container():
-        if st.session_state.processed_results:
-            st.info(st.session_state.processed_results)
+        for section, result in st.session_state.processed_results.items():
+            if result:
+                st.info(f"**{section}:**\n{result}")
