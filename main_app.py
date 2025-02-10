@@ -184,7 +184,6 @@ def upload_to_drive(file, username):
         file_metadata = {'name': new_file_name, 'parents': [parent_folder_id]}
         media = MediaIoBaseUpload(file_content, mimetype='application/pdf', resumable=True)
         drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        st.success(f"File uploaded successfully!")
     except Exception as e:
         st.error(f"Failed to upload file to Google Drive: {e}")
         

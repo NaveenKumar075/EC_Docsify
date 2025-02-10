@@ -80,7 +80,7 @@ def run_summarization(extracted_text):
     
     for idx, section in enumerate(summarization_sections):
         with cols[idx]:  # Place buttons inside columns
-            if st.button(section, use_container_width=True):
+            if st.markdown(f'<button class="stButton">{section}</button>', unsafe_allow_html=True):
                 st.session_state.processed_results = process_functions[section]()  # Store only the latest processed result
 
     # Display results inside a container
