@@ -11,7 +11,8 @@ from hydralit_components import HyLoader, Loaders
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2 import service_account
-from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot, EC_Summarization
+from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot
+import EC_Summarization
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -307,6 +308,15 @@ def main():
 
             if uploaded_file is None:
                 st.warning("Please upload a PDF file to proceed.")
+        
+        
+        elif selected == "Summarization":
+            st.header("Summarization Mode")
+            
+            if 'content' not in st.session_state:
+                st.warning("⚠ Please upload a document in ChatBot mode first.")
+            else:
+                EC_Summarization.run_summarization(st.session_state.content)
         
         # Logout function          
         if st.sidebar.button("Logout"):
