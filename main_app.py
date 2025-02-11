@@ -20,7 +20,8 @@ warnings.filterwarnings('ignore')
 st.set_page_config(
         page_title="EC Docsify", 
         page_icon="🚀", 
-        initial_sidebar_state="expanded")
+        initial_sidebar_state="expanded",
+        layout="wide")
 
 
 # Firebase configuration
@@ -402,9 +403,6 @@ def main():
         
         elif selected == "Summarization":
             st.header("Summarization Mode")
-            
-            st.set_page_config(layout="wide")
-                
             summarization_custom_css()
             
             if 'content' not in st.session_state:
