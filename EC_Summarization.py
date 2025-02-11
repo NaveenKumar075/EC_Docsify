@@ -46,32 +46,19 @@ summarization_sections = [
     "Boundaries (வரம்புகள்)"
 ]
 
-def get_general_info_prompt():
-    return "Extract the General Information details"
-
-def get_land_details_prompt():
-    return "Extract the Land Details"
-
-def get_transaction_details_prompt():
-    return "Extract the Transaction Details"
-
-def get_boundaries_prompt():
-    return "Extract the Boundaries"
-
 def process_section(title, prompt):
     return f"🔍 **Processed {title}**\n\n📝 **Prompt:** {prompt}"
+
+section_prompts = {
+    "General Information (பொதுவான தகவல்)": "Extract the General Information details",
+    "Land Details (நில விவரங்கள்)": "Extract the Land Details",
+    "Transaction Details (பரிமாற்ற விவரங்கள்)": "Extract the Transaction Details",
+    "Boundaries (வரம்புகள்)": "Extract the Boundaries"
+}
 
 # Ensure session state is initialized
 if "processed_results" not in st.session_state:
     st.session_state.processed_results = {section: None for section in summarization_sections}
-
-# Mapping sections to their respective processing functions
-process_functions = {
-    "General Information (பொதுவான தகவல்)": lambda content: process_section("General Information", get_general_info_prompt(), content),
-    "Land Details (நில விவரங்கள்)": lambda content: process_section("Land Details", get_land_details_prompt(), content),
-    "Transaction Details (பரிமாற்ற விவரங்கள்)" : lambda content: process_section("Transaction Details", get_transaction_details_prompt(), content),
-    "Boundaries (வரம்புகள்)": lambda content: process_section("Boundaries", get_boundaries_prompt(), content)
-}
 
 def run_summarization(content):
     st.write("### Select Sections to Summarize:")
@@ -79,10 +66,10 @@ def run_summarization(content):
     # Full-width 4-column layout
     cols = st.columns(4, gap="large")
     
-    for idx, (section, process_fn) in enumerate(process_functions.items()):
+    for idx, (section, prompt) in enumerate(section_prompts.items()):
         with cols[idx]:  # Place buttons inside columns
             if st.button(section, key=f"btn_{section}"):
-                st.session_state.processed_results[section] = process_fn(content)  # Update only the respective section
+                st.session_state.processed_results[section] = process_section(section, prompt)  # Update only the respective section
 
     # Display results inside a container
     st.write("### Processed Results:")
@@ -97,9 +84,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         st.error("⚠ No input file provided!")
         sys.exit(1)
-    
     file_path = sys.argv[1]
-    
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()

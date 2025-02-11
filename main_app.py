@@ -320,7 +320,7 @@ def main():
                     temp_file.write(st.session_state.content)
                     temp_file_path = temp_file.name
                     
-                    subprocess.run(["python", "EC_Summarization.py", temp_file_path])
+                subprocess.run(["python", "EC_Summarization.py", temp_file_path])
         
         # Logout function          
         if st.sidebar.button("Logout"):
