@@ -267,7 +267,7 @@ def run_summarization(content):
             if st.button(section_title, key=f"btn_{section_key}"):
                 with st.spinner(f"📝 Processing {section_title}..."):
                     prompt = get_section_prompt(section_key)
-                    result = process_section(section_title, prompt, content)
+                    result = process_section(section_title, prompt)
                     st.session_state.processed_results[section_key] = result
 
     # Display results inside a container
