@@ -2,7 +2,7 @@ import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
 import tempfile
-import subprocess
+import subprocess, os
 from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
@@ -13,7 +13,6 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2 import service_account
 from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot
-import EC_Summarization
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -315,12 +314,37 @@ def main():
             
             if 'content' not in st.session_state:
                 st.warning("⚠ Please upload a document in ChatBot mode first.")
+                st.info("Go to ChatBot mode, upload your PDF file, and then return here for summarization.")
             else:
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-                    temp_file.write(uploaded_file.read())
-                    temp_file_path = temp_file.name
+                try:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8") as temp_file:
+                        temp_file.write(st.session_state.content)
+                        temp_file_path = temp_file.name
+
+                    try:
+                        result = subprocess.run(
+                            ["python", "EC_Summarization.py", temp_file_path],
+                            check=True,
+                            capture_output=True,
+                            text=True
+                        )
+                        
+                        if result.returncode != 0:
+                            st.error("Summarization process failed.")
+                            if result.stderr:
+                                st.error(f"Error: {result.stderr}")
                     
-                subprocess.run(["python", "EC_Summarization.py", temp_file_path])
+                    except subprocess.CalledProcessError as e:
+                        st.error(f"Failed to run summarization: {str(e)}")
+                    
+                    except FileNotFoundError:
+                        st.error("Summarization script not found. Please check if EC_Summarization.py exists.")
+                
+                finally:
+                    try:
+                        os.unlink(temp_file_path)
+                    except Exception as e:
+                        st.warning(f"Failed to clean up temporary file: {str(e)}")
         
         # Logout function          
         if st.sidebar.button("Logout"):
