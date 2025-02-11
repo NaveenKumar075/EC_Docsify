@@ -316,7 +316,7 @@ def main():
             if 'content' not in st.session_state:
                 st.warning("⚠ Please upload a document in ChatBot mode first.")
             else:
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8") as temp_file:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf", mode="w", encoding="utf-8") as temp_file:
                     temp_file.write(st.session_state.content)
                     temp_file_path = temp_file.name
                     
