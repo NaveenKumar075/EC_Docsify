@@ -63,7 +63,7 @@ def process_section(title, prompt):
 
 # Ensure session state is initialized
 if "processed_results" not in st.session_state:
-    st.session_state.processed_results = {section: None for section in summarization_sections.keys()}
+    st.session_state.processed_results = {section: None for section in summarization_sections}
 
 # Mapping sections to their respective processing functions
 process_functions = {
@@ -81,7 +81,7 @@ def run_summarization(content):
     
     for idx, (section, process_fn) in enumerate(process_functions.items()):
         with cols[idx]:  # Place buttons inside columns
-            if st.button(section, use_container_width=True):
+            if st.button(section, key=f"btn_{section}"):
                 st.session_state.processed_results[section] = process_fn(content)  # Update only the respective section
 
     # Display results inside a container
