@@ -2,6 +2,7 @@ import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
 import tempfile
+import subprocess
 from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
@@ -315,7 +316,11 @@ def main():
             if 'content' not in st.session_state:
                 st.warning("⚠ Please upload a document in ChatBot mode first.")
             else:
-                EC_Summarization.run_summarization(st.session_state.content)
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8") as temp_file:
+                    temp_file.write(st.session_state.content)
+                    temp_file_path = temp_file.name
+                    
+                    subprocess.run(["python", "EC_Summarization.py", temp_file_path])
         
         # Logout function          
         if st.sidebar.button("Logout"):

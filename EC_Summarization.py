@@ -1,3 +1,4 @@
+import sys
 import streamlit as st
 
 st.set_page_config(layout="wide")
@@ -66,13 +67,13 @@ if "processed_results" not in st.session_state:
 
 # Mapping sections to their respective processing functions
 process_functions = {
-    "General Information (பொதுவான தகவல்)": lambda: process_section("General Information", get_general_info_prompt(), st.session_state.content),
-    "Land Details (நில விவரங்கள்)": lambda: process_section("Land Details", get_land_details_prompt(), st.session_state.content),
-    "Transaction Details (பரிமாற்ற விவரங்கள்)": lambda: process_section("Transaction Details", get_transaction_details_prompt(), st.session_state.content),
-    "Boundaries (வரம்புகள்)": lambda: process_section("Boundaries", get_boundaries_prompt(), st.session_state.content)
+    "General Information (பொதுவான தகவல்)": lambda content: process_section("General Information", get_general_info_prompt(), content),
+    "Land Details (நில விவரங்கள்)": lambda content: process_section("Land Details", get_land_details_prompt(), content),
+    "Transaction Details (பரிமாற்ற விவரங்கள்)" : lambda content: process_section("Transaction Details", get_transaction_details_prompt(), content),
+    "Boundaries (வரம்புகள்)": lambda content: process_section("Boundaries", get_boundaries_prompt(), content)
 }
 
-def run_summarization(extracted_text):
+def run_summarization(content):
     st.write("### Select Sections to Summarize:")
 
     # Full-width 4-column layout
@@ -81,7 +82,7 @@ def run_summarization(extracted_text):
     for idx, (section, process_fn) in enumerate(process_functions.items()):
         with cols[idx]:  # Place buttons inside columns
             if st.button(section, use_container_width=True):
-                st.session_state.processed_results[section] = process_fn()  # Update only the respective section
+                st.session_state.processed_results[section] = process_fn(content)  # Update only the respective section
 
     # Display results inside a container
     st.write("### Processed Results:")
@@ -89,3 +90,21 @@ def run_summarization(extracted_text):
         for section, result in st.session_state.processed_results.items():
             if result:
                 st.info(f"**{section}:**\n{result}")
+                
+
+if __name__ == "__main__":
+    
+    if len(sys.argv) < 2:
+        st.error("⚠ No input file provided!")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.read()
+    except FileNotFoundError:
+        st.error("⚠ Failed to load the document.")
+        sys.exit(1)
+    
+    run_summarization(content)
