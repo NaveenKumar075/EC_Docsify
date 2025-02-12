@@ -2,7 +2,6 @@ import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
 import tempfile
-import subprocess, os
 from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
@@ -245,10 +244,6 @@ def get_section_prompt(section_key):
     return section_prompts.get(section_key, "")
 
 
-def process_section(title, prompt):
-    return f"🔍 **Processed {title}**\n\n📝 **Prompt:** {prompt}"
-
-
 def initialize_sum_session_state():
     if "processed_results" not in st.session_state:
         st.session_state.processed_results = {section: None for section in summarization_sections.keys()}
@@ -266,18 +261,19 @@ def run_summarization(content):
         with cols[idx]:  # Place buttons inside columns
             if st.button(section_title, key=f"btn_{section_key}"):
                 with st.spinner(f"📝 Processing {section_title}..."):
-                    prompt = get_section_prompt(section_key)
-                    result = process_section(section_title, prompt)
-                    st.session_state.processed_results[section_key] = result
+                    prompt = get_section_prompt(section_title)
+                    retrieved_chunks = retrieving_process(content, prompt)
+                    reranked_docs = rerank_documents(retrieved_chunks, prompt)
+                    response = EC_ChatBot(reranked_docs, prompt)
+                    st.session_state.processed_results[section_key] = response
 
-    # Display results inside a container
     st.write("### 📋 Summarized Results:")
     with st.container():
         for section_key, section_title in summarization_sections.items():
             result = st.session_state.processed_results[section_key]
             if result:
                 with st.expander(section_title, expanded=True):
-                    st.markdown(result)
+                    st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
         
         
 # Streamlit UI setup
