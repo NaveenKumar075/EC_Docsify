@@ -41,6 +41,7 @@ def apply_custom_css():
                 justify-content: start; /* Align content at the top */
                 height: 100vh; /* Full height */
                 overflow-y: auto; /* Enable vertical scrolling */
+                overflow-x: hidden; /* Hide horizontal scrolling */
                 padding-bottom: 0 !important; /* Remove extra padding */
             }
 
@@ -153,6 +154,7 @@ def apply_custom_css():
             /* 🖥️ Enable Scrollbar on the Main Application Page */
             .main {
                 overflow-y: auto !important;
+                overflow-x: hidden; /* Prevents horizontal scrolling */
                 max-height: 100vh; /* Ensure scrolling is only for the main page */
             }
             /* Custom Scrollbar Styling for Main Page */
