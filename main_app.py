@@ -170,9 +170,15 @@ def store_session(user_data):
 # Function to check session from cookies
 def check_session():
     user_data = cookie_controller.get("user_session")
+    if "page_loaded" not in st.session_state:
+        st.session_state.page_loaded = False  # Initialize page load state
+        
     if user_data:
         st.session_state['authenticated'] = True
         st.session_state['user'] = user_data
+        
+        if not st.session_state.page_loaded: # Set page_loaded to True only if it hasn’t run before
+            st.session_state.page_loaded = True
     else:
         st.session_state['authenticated'] = False
         st.session_state['user'] = {}
@@ -281,10 +287,11 @@ def run_summarization(content):
         
 # Streamlit UI setup
 def main():
+    check_session() # Call session check
     st.title("EC Docsify 🤖")
-    with HyLoader('', Loaders.pretty_loaders,index=[0]):
-        time.sleep(2)
-    check_session()
+    if not st.session_state.page_loaded:
+        with HyLoader('', Loaders.pretty_loaders,index=[0]):
+            time.sleep(2)
         
     if not st.session_state.get('authenticated', False):
         st.sidebar.header("Authentication")
