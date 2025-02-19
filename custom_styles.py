@@ -4,10 +4,10 @@ def apply_custom_css():
     
     st.markdown("""
         <style>
-            /* Dark blue gradient background */
+            /* 🌟 Light Theme Background */
             body {
-                background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-                color: white;
+                background: linear-gradient(to right, #f8f9fa, #e3e7eb, #dde4eb);
+                color: #2c3e50;
                 font-family: 'Poppins', sans-serif;
                 animation: fadeIn 1s ease-in-out;
             }
@@ -18,19 +18,12 @@ def apply_custom_css():
                 to { opacity: 1; transform: translateY(0); }
             }
 
-            /* Sidebar Animation */
+            /* 📌 Light Sidebar */
             [data-testid="stSidebar"] {
-                background: #1a1f2b;
-                color: white;
-                border-right: 2px solid rgba(255, 255, 255, 0.2);
+                background: linear-gradient(to bottom, #f1f3f5, #ffffff);
+                color: #2c3e50;
+                border-right: 2px solid rgba(0, 0, 0, 0.1);
                 padding: 20px;
-                transform: translateX(-100%);
-                animation: slideIn 0.8s ease-in-out forwards;
-            }
-
-            @keyframes slideIn {
-                from { transform: translateX(-100%); }
-                to { transform: translateX(0); }
             }
 
             /* Sidebar Header */
@@ -41,47 +34,61 @@ def apply_custom_css():
                 margin-bottom: 20px;
             }
 
-            /* Sidebar menu title */
+            /* Sidebar Menu Title */
             .main-menu-title {
                 display: flex;
                 align-items: center;
-                font-size: 22px;
+                justify-content: flex-start;
+                gap: 10px;
+                font-size: 24px;
                 font-weight: bold;
-                color: #ffffff;
-                padding: 10px;
-                border-bottom: 2px solid #4da8da;
+                color: #2c3e50;
+                padding: 0 10px;
+                margin-bottom: 15px;
             }
 
-            /* Navigation button styles */
+            /* Material Icon Color */
+            .material-symbols-outlined {
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+                color: #2c3e50;
+            }
+
+            /* 📍 Elegant Button Styling */
             .stButton > button {
-                background-image: linear-gradient(to right, #4da8da 0%, #41c7c7 51%, #1282a2 100%);
+                background: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
                 color: white;
                 font-size: 18px;
                 font-weight: bold;
                 padding: 12px 30px;
                 border: none;
                 border-radius: 12px;
-                transition: all 0.4s ease-in-out;
+                background-size: 200% auto;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                display: block;
+                width: 100%;
                 cursor: pointer;
-                animation: buttonPulse 2s infinite;
             }
 
-            /* Button hover & click effect */
+            /* 🌟 Hover Glow Effect */
             .stButton > button:hover {
                 background-position: right center;
-                transform: scale(1.1);
-                box-shadow: 6px 6px 16px rgba(41, 172, 172, 0.6);
-                color: #1a1f2b;
+                box-shadow: 0px 0px 20px rgba(255, 154, 158, 0.7);
+                transform: scale(1.05);
+                color: black;
             }
 
-            /* Button Pulse Animation */
-            @keyframes buttonPulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); box-shadow: 0px 0px 10px rgba(41, 172, 172, 0.6); }
-                100% { transform: scale(1); }
+            /* 🔥 Swipe Right Animation */
+            .stButton > button:active {
+                transform: translateX(5px);
+                transition: 0.1s ease-in-out;
             }
 
-            /* Chat input box */
+            /* 🗨️ Chat Input Box */
             .stChatInput > div {
                 background: rgba(255, 255, 255, 0.1);
                 border: 1px solid rgba(255, 255, 255, 0.3);
@@ -92,7 +99,7 @@ def apply_custom_css():
                 animation: fadeIn 1s ease-in-out;
             }
 
-            /* Chatbot messages */
+            /* 📩 Chat Messages */
             .stChatMessage {
                 background: rgba(255, 255, 255, 0.1);
                 border-radius: 8px;
@@ -107,17 +114,17 @@ def apply_custom_css():
                 to { transform: scale(1); opacity: 1; }
             }
 
-            /* Smooth animations */
+            /* 🖱️ Smooth Animations */
             * {
                 transition: all 0.3s ease-in-out;
             }
 
-            /* Scrollbar customization */
+            /* 🖥️ Scrollbar Customization */
             ::-webkit-scrollbar {
                 width: 8px;
             }
             ::-webkit-scrollbar-track {
-                background: #1a1f2b;
+                background: #f1f3f5;
             }
             ::-webkit-scrollbar-thumb {
                 background: #4da8da;
@@ -127,14 +134,13 @@ def apply_custom_css():
                 background: #41c7c7;
             }
 
-            
             /* 📱 Mobile Responsiveness */
             @media screen and (max-width: 768px) {
                 body {
                     font-size: 16px;
                     padding: 10px;
                 }
-                
+
                 [data-testid="stSidebar"] {
                     width: 100%;
                     position: fixed;
@@ -142,20 +148,18 @@ def apply_custom_css():
                     left: 0;
                     height: auto;
                     border-right: none;
-                    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-                    animation: slideIn 0.8s ease-in-out forwards;
+                    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
                 }
 
                 .stButton > button {
                     font-size: 16px;
                     padding: 10px 20px;
-                    border-radius: 14px;
                 }
-                
+
                 .main-menu-title {
                     font-size: 18px;
-                    padding: 8px;
                 }
             }
         </style>
+
     """, unsafe_allow_html=True)
