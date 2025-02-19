@@ -317,35 +317,35 @@ def main():
         st.write("This is the new interface for logged-in users.")
         
         with st.sidebar:
-            # st.sidebar.markdown(
-            # """
-            # <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=widgets" />
-            # <style>
-            # .main-menu-title {
-            #     display: flex;
-            #     align-items: center;
-            #     justify-content: flex-start;
-            #     gap: 10px;
-            #     font-size: 24px;
-            #     font-weight: bold;
-            #     color: #2c3e50;
-            #     padding: 0 10px;
-            #     margin-bottom: 15px;
-            # }
-            # .material-symbols-outlined {
-            #     font-variation-settings:
-            #     'FILL' 0,
-            #     'wght' 400,
-            #     'GRAD' 0,
-            #     'opsz' 24;
-            #     color: #2c3e50;
-            # }
-            # </style>
-            # <div class="main-menu-title">
-            # <span class="material-symbols-outlined">widgets</span>
-            # Main Menu</div>
-            # """,
-            # unsafe_allow_html=True)
+            st.sidebar.markdown(
+            """
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=widgets" />
+            <style>
+            .main-menu-title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 10px;
+                font-size: 24px;
+                font-weight: bold;
+                color: #2c3e50;
+                padding: 0 10px;
+                margin-bottom: 15px;
+            }
+            .material-symbols-outlined {
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+                color: #2c3e50;
+            }
+            </style>
+            <div class="main-menu-title">
+            <span class="material-symbols-outlined">widgets</span>
+            Main Menu</div>
+            """,
+            unsafe_allow_html=True)
             
             selected = option_menu(None, 
                 ['Welcome', 'ChatBot', 'Summarization', 'Contact Us'], 
