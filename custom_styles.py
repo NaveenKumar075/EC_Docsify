@@ -40,17 +40,29 @@ def apply_custom_css():
                 flex-direction: column;
                 justify-content: start; /* Align content at the top */
                 height: 100vh; /* Full height */
-                overflow: hidden !important; /* No scrolling */
+                overflow-y: auto; /* Enable vertical scrolling */
+                padding-bottom: 0 !important; /* Remove extra padding */
             }
 
             /* Sidebar Menu Container */
             .sidebar-content {
-                flex-grow: 1; /* Allows content to expand while keeping buttons at the bottom */
+                flex-grow: 0 !important; /* Prevents unnecessary stretching */
+            }
+            
+            /* Remove Extra Space Below Last Button */
+            .sidebar-menu {
+                margin-bottom: 0 !important; 
+                padding-bottom: 0 !important; 
             }
 
             /* Fix for Logout Button */
             .logout-button {
                 margin-top: auto !important; /* Pushes it to the bottom */
+            }
+            
+             /* Remove Empty Divs */
+            .sidebar-content > div:last-child {
+                display: none !important;
             }
 
             /* Sidebar Menu Title */
@@ -144,16 +156,20 @@ def apply_custom_css():
                 max-height: 100vh; /* Ensure scrolling is only for the main page */
             }
             /* Custom Scrollbar Styling for Main Page */
+            [data-testid="stSidebar"]::-webkit-scrollbar,
             .main::-webkit-scrollbar {
                 width: 8px;
             }
+            [data-testid="stSidebar"]::-webkit-scrollbar-track,
             .main::-webkit-scrollbar-track {
                 background: #f1f3f5;
             }
+            [data-testid="stSidebar"]::-webkit-scrollbar-thumb,
             .main::-webkit-scrollbar-thumb {
                 background: #4da8da;
                 border-radius: 10px;
             }
+            [data-testid="stSidebar"]::-webkit-scrollbar-thumb:hover,
             .main::-webkit-scrollbar-thumb:hover {
                 background: #41c7c7;
             }
