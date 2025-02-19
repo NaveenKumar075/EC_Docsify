@@ -191,40 +191,40 @@ def upload_to_drive(file, username):
         st.error(f"Failed to upload file to Google Drive: {e}")
         
 # *** EC Summarization: ***
-def summarization_custom_css():
-    st.markdown("""
-        <style>
-            /* Center-align buttons */
-            .stButton {
-                display: flex;
-                justify-content: center;
-            }
-            .stButton > button {
-                background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                padding: 15px 45px;
-                text-transform: none;
-                border: none;
-                border-radius: 15px;
-                background-size: 200% auto;
-                transition: 0.5s ease-in-out;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                display: block;
-                width: 100%;
-                cursor: pointer;
-            }
+# def summarization_custom_css():
+#     st.markdown("""
+#         <style>
+#             /* Center-align buttons */
+#             .stButton {
+#                 display: flex;
+#                 justify-content: center;
+#             }
+#             .stButton > button {
+#                 background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
+#                 color: white;
+#                 font-size: 20px;
+#                 font-weight: bold;
+#                 padding: 15px 45px;
+#                 text-transform: none;
+#                 border: none;
+#                 border-radius: 15px;
+#                 background-size: 200% auto;
+#                 transition: 0.5s ease-in-out;
+#                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+#                 display: block;
+#                 width: 100%;
+#                 cursor: pointer;
+#             }
 
-            .stButton > button:hover {
-                background-position: right center;
-                transform: scale(1.07);
-                box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6);
-                transition: 0.3s ease-in-out;
-                color: black;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+#             .stButton > button:hover {
+#                 background-position: right center;
+#                 transform: scale(1.07);
+#                 box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6);
+#                 transition: 0.3s ease-in-out;
+#                 color: black;
+#             }
+#         </style>
+#     """, unsafe_allow_html=True)
 
 
 # Summarization Sections
@@ -317,35 +317,35 @@ def main():
         st.write("This is the new interface for logged-in users.")
         
         with st.sidebar:
-            st.sidebar.markdown(
-            """
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=widgets" />
-            <style>
-            .main-menu-title {
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 10px;
-                font-size: 24px;
-                font-weight: bold;
-                color: #2c3e50;
-                padding: 0 10px;
-                margin-bottom: 15px;
-            }
-            .material-symbols-outlined {
-                font-variation-settings:
-                'FILL' 0,
-                'wght' 400,
-                'GRAD' 0,
-                'opsz' 24;
-                color: #2c3e50;
-            }
-            </style>
-            <div class="main-menu-title">
-            <span class="material-symbols-outlined">widgets</span>
-            Main Menu</div>
-            """,
-            unsafe_allow_html=True)
+            # st.sidebar.markdown(
+            # """
+            # <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=widgets" />
+            # <style>
+            # .main-menu-title {
+            #     display: flex;
+            #     align-items: center;
+            #     justify-content: flex-start;
+            #     gap: 10px;
+            #     font-size: 24px;
+            #     font-weight: bold;
+            #     color: #2c3e50;
+            #     padding: 0 10px;
+            #     margin-bottom: 15px;
+            # }
+            # .material-symbols-outlined {
+            #     font-variation-settings:
+            #     'FILL' 0,
+            #     'wght' 400,
+            #     'GRAD' 0,
+            #     'opsz' 24;
+            #     color: #2c3e50;
+            # }
+            # </style>
+            # <div class="main-menu-title">
+            # <span class="material-symbols-outlined">widgets</span>
+            # Main Menu</div>
+            # """,
+            # unsafe_allow_html=True)
             
             selected = option_menu(None, 
                 ['Welcome', 'ChatBot', 'Summarization', 'Contact Us'], 
@@ -402,7 +402,7 @@ def main():
         
         elif selected == "Summarization":
             st.header("Summarization Mode")
-            summarization_custom_css()
+            # summarization_custom_css()
             
             if 'content' not in st.session_state:
                 st.warning("⚠ Please upload a document in ChatBot mode first.")
