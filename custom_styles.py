@@ -87,7 +87,7 @@ def apply_custom_css():
                 'GRAD' 0,
                 'opsz' 24;
                 color: #2c3e50;
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease-in-out;
             }
             
             /* Main Menu Container */
@@ -110,11 +110,27 @@ def apply_custom_css():
                 font-weight: 500;
                 transition: all 0.3s ease-in-out;
                 cursor: pointer;
+                position: relative;
+                overflow: hidden;
             }
 
-            /* Hover Effect */
+            /* Hover Effect - Swipe Right Animation */
+            .main-menu-item::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: rgba(74, 144, 226, 0.2);
+                transition: left 0.3s ease-in-out;
+            }
+            
+            .main-menu-item:hover::before {
+                left: 0;
+            }
+
             .main-menu-item:hover {
-                background: rgba(74, 144, 226, 0.1);
                 border-left: 4px solid #4a90e2;
                 padding-left: 16px;
             }
