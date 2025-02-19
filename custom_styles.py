@@ -149,12 +149,13 @@ def apply_custom_css():
                 .stButton > button {
                     font-size: 16px;
                     padding: 10px 20px;
+                    border-radius: 14px;
                 }
                 
                 .main-menu-title {
                     font-size: 18px;
+                    padding: 8px;
                 }
             }
-
         </style>
     """, unsafe_allow_html=True)
