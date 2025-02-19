@@ -118,19 +118,24 @@ def apply_custom_css():
             * {
                 transition: all 0.3s ease-in-out;
             }
-
-            /* 🖥️ Scrollbar Customization */
-            ::-webkit-scrollbar {
+            
+            /* 🖥️ Enable Scrollbar on the Main Application Page */
+            .main {
+                overflow-y: auto !important;
+                max-height: 100vh; /* Ensure scrolling is only for the main page */
+            }
+            /* Custom Scrollbar Styling for Main Page */
+            .main::-webkit-scrollbar {
                 width: 8px;
             }
-            ::-webkit-scrollbar-track {
+            .main::-webkit-scrollbar-track {
                 background: #f1f3f5;
             }
-            ::-webkit-scrollbar-thumb {
+            .main::-webkit-scrollbar-thumb {
                 background: #4da8da;
                 border-radius: 10px;
             }
-            ::-webkit-scrollbar-thumb:hover {
+            .main::-webkit-scrollbar-thumb:hover {
                 background: #41c7c7;
             }
 
