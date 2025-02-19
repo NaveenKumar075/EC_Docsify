@@ -311,7 +311,7 @@ def main():
 
     else:
         username = st.session_state['user'].get('username', 'User')
-        st.sidebar.success(f"Welcome back, {username}")
+        st.sidebar.success(f"Welcome back, {username} ✨")
         
         st.title("Welcome to EC Docsify!")
         st.write("This is the new interface for logged-in users.")

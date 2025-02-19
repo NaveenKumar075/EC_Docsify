@@ -80,13 +80,77 @@ def apply_custom_css():
             }
 
             /* Material Icon Color */
-            .material-symbols-outlined {
+            .material-symbols-outlined, .main-menu-item svg {
                 font-variation-settings:
                 'FILL' 0,
                 'wght' 400,
                 'GRAD' 0,
                 'opsz' 24;
                 color: #2c3e50;
+                transition: transform 0.3s ease;
+            }
+            
+            /* Main Menu Container */
+            .main-menu {
+                background: #ffffff;
+                border-radius: 15px;
+                border: 1px solid #d1d1d1;
+                box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);
+                padding: 15px;
+                margin: 10px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Sidebar Menu Items */
+            .main-menu-item {
+                display: flex;
+                align-items: center;
+                padding: 12px;
+                border-radius: 10px;
+                font-weight: 500;
+                transition: all 0.3s ease-in-out;
+                cursor: pointer;
+            }
+
+            /* Hover Effect */
+            .main-menu-item:hover {
+                background: rgba(74, 144, 226, 0.1);
+                border-left: 4px solid #4a90e2;
+                padding-left: 16px;
+            }
+
+            /* Active Menu Item */
+            .main-menu-item.active {
+                background: linear-gradient(to right, #4a90e2, #6aa3ff);
+                color: white;
+                font-weight: bold;
+                border-left: 4px solid #ffffff;
+            }
+
+            /* Icon Hover Effect */
+            .main-menu-item:hover .material-symbols-outlined {
+                transform: scale(1.2);
+            }
+
+            /* Logout Button */
+            .logout-btn {
+                background: linear-gradient(to right, #ff5e62, #ff9966);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 12px;
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            /* Hover effect for Logout */
+            .logout-btn:hover {
+                background: linear-gradient(to right, #ff3d3d, #ff7e5f);
+                transform: scale(1.05);
             }
 
             /* 📍 Elegant Button Styling */
