@@ -139,6 +139,7 @@ def login(email, password):
 def logout():
     cookie_controller.set("user_session", "", max_age=0) # Clear cookie by setting it to an empty value with a past expiration
     st.session_state['authenticated'] = False
+    st.session_state['logout_triggered'] = True
     st.session_state['user'] = {} # Clear user data safely
     st.session_state.clear()
     st.sidebar.success("Logged out successfully!")
@@ -170,18 +171,26 @@ def store_session(user_data):
 # Function to check session from cookies
 def check_session():
     user_data = cookie_controller.get("user_session")
+    
     if "page_loaded" not in st.session_state:
-        st.session_state.page_loaded = False  # Initialize page load state
+        st.session_state.page_loaded = False  # Handles login
+    if "logout_triggered" not in st.session_state:
+        st.session_state.logout_triggered = False  # Handles logout
         
     if user_data:
         st.session_state['authenticated'] = True
         st.session_state['user'] = user_data
         
-        if not st.session_state.page_loaded: # Set page_loaded to True only if it hasn’t run before
+        if not st.session_state.page_loaded: # Show loader on first login
             st.session_state.page_loaded = True
     else:
         st.session_state['authenticated'] = False
         st.session_state['user'] = {}
+        
+        # Reset page_loaded on logout so it triggers again
+        if st.session_state.logout_triggered:
+            st.session_state.page_loaded = False
+            st.session_state.logout_triggered = False  # Reset logout flag
 
 
 # Google Drive upload function
@@ -288,7 +297,9 @@ def run_summarization(content):
 # Streamlit UI setup
 def main():
     check_session() # Call session check
+    
     st.title("EC Docsify 🤖")
+    
     if not st.session_state.page_loaded:
         with HyLoader('', Loaders.pretty_loaders,index=[0]):
             time.sleep(2)
@@ -416,7 +427,6 @@ def main():
                 st.info("Go to ChatBot mode, upload your PDF file, and then return here for summarization.")
             else:
                 run_summarization(st.session_state.content)
-        
         
         # Logout function          
         if st.sidebar.button("Logout"):
