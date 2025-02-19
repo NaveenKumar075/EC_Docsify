@@ -33,6 +33,25 @@ def apply_custom_css():
                 font-weight: bold;
                 margin-bottom: 20px;
             }
+            
+            /* Ensure Sidebar Uses Only Necessary Space */
+            [data-testid="stSidebar"] {
+                display: flex;
+                flex-direction: column;
+                justify-content: start; /* Align content at the top */
+                height: 100vh; /* Full height */
+                overflow: hidden !important; /* No scrolling */
+            }
+
+            /* Sidebar Menu Container */
+            .sidebar-content {
+                flex-grow: 1; /* Allows content to expand while keeping buttons at the bottom */
+            }
+
+            /* Fix for Logout Button */
+            .logout-button {
+                margin-top: auto !important; /* Pushes it to the bottom */
+            }
 
             /* Sidebar Menu Title */
             .main-menu-title {
