@@ -12,6 +12,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2 import service_account
 from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot
+from custom_styles import apply_custom_css
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -21,6 +22,8 @@ st.set_page_config(
         page_icon="🚀", 
         initial_sidebar_state="expanded",
         layout="wide")
+
+apply_custom_css()
 
 
 # Firebase configuration
