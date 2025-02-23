@@ -415,29 +415,29 @@ def main():
                     st.session_state.content = pdf_extraction(uploaded_file)
                     st.success("File processed successfully!")
                     
-            # Ensure the content is available before displaying chat history and input box
-            if 'content' in st.session_state:
-                display_chat_history()
-                    
-                if prompt := st.chat_input("Ask your question here:"):
-                    st.session_state.chat_history.append({"role": "user", "content": prompt})
-                    with st.chat_message("user"):
-                        st.markdown(prompt)
-                    with st.chat_message("assistant"):
-                        with st.spinner("🌟 Generating Response..."):
-                            retrieved_chunks = retrieving_process(st.session_state.content, prompt)
-                            st.toast("📑 Retrieved Chunks")
-                            reranked_docs = rerank_documents(retrieved_chunks, prompt)
-                            st.toast("📚 Reranked Documents")
-                            response = EC_ChatBot(reranked_docs, prompt)
-                            st.toast("✔️ Response Generated")
-                    st.session_state.chat_history.append({"role": "assistant", "content": response})
-                    st.rerun()
-            else:
-                st.info("Please upload and process the document first.")
+            # Don't ask for re-upload if content is already in session_state
+            if 'content' not in st.session_state:
+                st.warning("🚨 Please upload a PDF file to proceed.")
+                st.stop()  # Prevent further execution
 
-            if uploaded_file is None:
-                st.warning("Please upload a PDF file to proceed.")
+            # Show chat history and input
+            display_chat_history()
+                    
+            
+            if prompt := st.chat_input("Ask your question here:"):
+                st.session_state.chat_history.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+                with st.chat_message("assistant"):
+                    with st.spinner("🌟 Generating Response..."):
+                        retrieved_chunks = retrieving_process(st.session_state.content, prompt)
+                        st.toast("📑 Retrieved Chunks")
+                        reranked_docs = rerank_documents(retrieved_chunks, prompt)
+                        st.toast("📚 Reranked Documents")
+                        response = EC_ChatBot(reranked_docs, prompt)
+                        st.toast("✔️ Response Generated")
+                st.session_state.chat_history.append({"role": "assistant", "content": response})
+                st.rerun()
         
         
         elif selected == "Summarization":
