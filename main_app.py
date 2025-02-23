@@ -54,6 +54,7 @@ def initialize_session_state():
         'authenticated': False,
         'user': {}, # To store the user details
         'choice': None,
+        'uploaded_file': None,
         'content': None,
         'meta_details': None,
         'chat_history': []
@@ -394,13 +395,14 @@ def main():
                     </div>
                 """, unsafe_allow_html=True)
                 selected = "ChatBot" # Force redirection to ChatBot mode
+                st.rerun()
         
         if selected == 'ChatBot':
             st.header("Chatbot Mode")
             st.write("Ask questions about the uploaded document.")
             
             st.subheader("Upload Your Files Here!")
-            uploaded_file = st.file_uploader("Choose a file 📑", type=["pdf"])
+            uploaded_file = st.file_uploader("Upload your PDF 📑", type=["pdf"])
             
             if uploaded_file is not None:
                 if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
@@ -408,6 +410,7 @@ def main():
                         upload_to_drive(uploaded_file, username)  # Upload to Google Drive
 
                     # Store filename to avoid reprocessing
+                    st.session_state.uploaded_file = uploaded_file
                     st.session_state.uploaded_filename = uploaded_file.name
                     st.session_state.content = pdf_extraction(uploaded_file)
                     st.success("File processed successfully!")
@@ -440,6 +443,11 @@ def main():
         elif selected == "Summarization":
             st.header("Summarization Mode")
             summarization_custom_css()
+            
+            # 🔄 Restore extracted text if session state lost it
+            if 'content' not in st.session_state and 'uploaded_file' in st.session_state:
+                st.session_state.content = pdf_extraction(st.session_state.uploaded_file)
+            
             st.success("✅ Document loaded successfully! You can now summarize.")
             run_summarization(st.session_state.content)
         
