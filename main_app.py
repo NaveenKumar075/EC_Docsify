@@ -375,7 +375,14 @@ def main():
                 "nav-link-selected": {"background-color": "#8AAAE5"}},
                 default_index=0
             )
-            
+        
+        # Check before redirecting to Summarization mode
+        if selected == "Summarization":
+            if "content" not in st.session_state or not st.session_state["content"]:
+                st.sidebar.warning("⚠️ No document uploaded! Please upload a PDF in the ChatBot mode before summarizing.")
+                st.info("Go to ChatBot mode, upload your PDF file, and then return here for summarization.")
+                selected = "ChatBot" # Force redirection to ChatBot mode
+        
         if selected == 'ChatBot':
             st.header("Chatbot Mode")
             st.write("Ask questions about the uploaded document.")
@@ -421,12 +428,8 @@ def main():
         elif selected == "Summarization":
             st.header("Summarization Mode")
             summarization_custom_css()
-            
-            if 'content' not in st.session_state:
-                st.warning("⚠ Please upload a document in ChatBot mode first.")
-                st.info("Go to ChatBot mode, upload your PDF file, and then return here for summarization.")
-            else:
-                run_summarization(st.session_state.content)
+            st.success("✅ Document loaded successfully! You can now summarize.")
+            run_summarization(st.session_state.content)
         
         # Logout function          
         if st.sidebar.button("Logout"):
