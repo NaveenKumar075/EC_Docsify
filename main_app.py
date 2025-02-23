@@ -380,7 +380,19 @@ def main():
         if selected == "Summarization":
             if "content" not in st.session_state or not st.session_state["content"]:
                 st.sidebar.warning("⚠️ No document uploaded! Please upload a PDF in the ChatBot mode before summarizing.")
-                st.info("Go to ChatBot mode, upload your PDF file, and then return here for summarization.")
+                st.markdown("""
+                    <div style="
+                        padding: 15px; 
+                        border-radius: 10px; 
+                        background-color: #ffe6cc; 
+                        color: #8a4b08; 
+                        font-size: 16px; 
+                        font-weight: bold;">
+                    🚀 **Whoa! You just skipped a step!**  
+                    You've been **redirected back to ChatBot Mode** because your PDF is missing 📄❌  
+                    👉 **Upload your document here first**, then hop over to Summarization Mode for the magic! ✨
+                    </div>
+                """, unsafe_allow_html=True)
                 selected = "ChatBot" # Force redirection to ChatBot mode
         
         if selected == 'ChatBot':
