@@ -401,19 +401,23 @@ def main():
             st.header("Chatbot Mode")
             st.write("Ask questions about the uploaded document.")
             
-            st.subheader("Upload Your Files Here!")
-            uploaded_file = st.file_uploader("Upload your PDF 📑", type=["pdf"])
-            
-            if uploaded_file is not None:
-                if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
-                    with st.spinner("📤 Uploading in progress ..."):
-                        upload_to_drive(uploaded_file, username)  # Upload to Google Drive
+            # Check if a PDF file is already uploaded
+            if "content" in st.session_state:
+                st.success("✅ PDF file uploaded! You can proceed with ChatBot and Summarization mode!")
+            else:
+                st.subheader("Upload Your Files Here!")
+                uploaded_file = st.file_uploader("Upload your PDF 📑", type=["pdf"])
+                
+                if uploaded_file is not None:
+                    if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
+                        with st.spinner("📤 Uploading in progress ..."):
+                            upload_to_drive(uploaded_file, username)  # Upload to Google Drive
 
-                    # Store filename to avoid reprocessing
-                    st.session_state.uploaded_file = uploaded_file
-                    st.session_state.uploaded_filename = uploaded_file.name
-                    st.session_state.content = pdf_extraction(uploaded_file)
-                    st.success("File processed successfully!")
+                        # Store filename to avoid reprocessing
+                        st.session_state.uploaded_file = uploaded_file
+                        st.session_state.uploaded_filename = uploaded_file.name
+                        st.session_state.content = pdf_extraction(uploaded_file)
+                        st.success("✅ File processed successfully! You can proceed with ChatBot and Summarization mode!")
                     
             # Don't ask for re-upload if content is already in session_state
             if 'content' not in st.session_state:
@@ -422,7 +426,6 @@ def main():
 
             # Show chat history and input
             display_chat_history()
-                    
             
             if prompt := st.chat_input("Ask your question here:"):
                 st.session_state.chat_history.append({"role": "user", "content": prompt})
