@@ -393,7 +393,7 @@ def main():
                     👉 **Upload your document here first**, then hop over to Summarization Mode for the magic! ✨
                     </div>
                 """, unsafe_allow_html=True)
-                selected = "ChatBot" # Force redirection to ChatBot mode
+                # selected = "ChatBot" # Force redirection to ChatBot mode
         
         if selected == 'ChatBot':
             st.header("Chatbot Mode")
