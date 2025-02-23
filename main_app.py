@@ -395,7 +395,7 @@ def main():
                     </div>
                 """, unsafe_allow_html=True)
                 selected = "ChatBot" # Force redirection to ChatBot mode
-                st.rerun()
+        
         
         if selected == 'ChatBot':
             st.header("Chatbot Mode")
