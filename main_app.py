@@ -388,8 +388,8 @@ def main():
                         color: #8a4b08; 
                         font-size: 16px; 
                         font-weight: bold;">
-                    🚀 **Whoa! You just skipped a step!**  
-                    You've been **redirected back to ChatBot Mode** because your PDF is missing 📄❌  
+                    🚀 **Whoa! You just skipped a step!** \n\n
+                    You've been **redirected back to ChatBot Mode** because your PDF is missing 📄❌ \n\n
                     👉 **Upload your document here first**, then hop over to Summarization Mode for the magic! ✨
                     </div>
                 """, unsafe_allow_html=True)
