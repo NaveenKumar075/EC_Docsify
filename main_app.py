@@ -387,7 +387,7 @@ def main():
                         padding: 15px; 
                         border-radius: 10px; 
                         background-color: #ffe6cc; 
-                        color: #8a4b08; 
+                        color:rgb(0, 0, 0); 
                         font-size: 16px; 
                         font-weight: bold;">
                     🚀 **Whoa! You just skipped a step!** \n\n
