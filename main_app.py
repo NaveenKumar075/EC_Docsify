@@ -74,6 +74,7 @@ def display_chat_history():
 
 
 # Function to load a Lottie animation from a URL
+@st.cache_resource
 def load_lottie_url(url: str):
     r = requests.get(url)
     if r.status_code != 200:
