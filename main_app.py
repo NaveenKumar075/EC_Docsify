@@ -403,7 +403,7 @@ def main():
             st.write("Ask questions about the uploaded document.")
             
             # Check if a PDF file is already uploaded
-            if "content" in st.session_state:
+            if "content" in st.session_state and st.session_state["content"]:
                 st.success("✅ PDF file uploaded! You can proceed with ChatBot and Summarization mode!")
             else:
                 st.subheader("Upload Your Files Here!")
@@ -421,7 +421,7 @@ def main():
                         st.success("✅ File processed successfully! You can proceed with ChatBot and Summarization mode!")
                     
             # Don't ask for re-upload if content is already in session_state
-            if 'content' not in st.session_state:
+            if 'content' not in st.session_state or not st.session_state["content"]:
                 st.warning("🚨 Please upload a PDF file to proceed.")
                 st.stop()  # Prevent further execution
 
