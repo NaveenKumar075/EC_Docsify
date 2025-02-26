@@ -11,7 +11,7 @@ from hydralit_components import HyLoader, Loaders
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2 import service_account
-from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot, extract_all_document_remarks
+from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, extract_meta_details, EC_ChatBot
 from custom_styles import apply_custom_css
 import warnings
 warnings.filterwarnings('ignore')
@@ -249,8 +249,7 @@ summarization_sections = {
     "general_info": "General Information (பொதுவான தகவல்)",
     "land_details": "Land Details (நில விவரங்கள்)",
     "transaction_details": "Transaction Details (பரிமாற்ற விவரங்கள்)",
-    "boundaries": "Boundaries (வரம்புகள்)",
-    "document_remarks": "Document Remarks (ஆவணக் குறிப்புகள்)"
+    "boundaries": "Boundaries (வரம்புகள்)"
 }
 
 
@@ -261,9 +260,6 @@ def get_section_prompt(section_key):
         "Transaction Details (பரிமாற்ற விவரங்கள்)": "Extract the Transaction Details",
         "Boundaries (வரம்புகள்)": "Extract the Boundaries"
     }
-    
-    if section_key == "Document Remarks (ஆவணக் குறிப்புகள்)":
-        return extract_all_document_remarks
     
     return section_prompts.get(section_key, "")
 
@@ -278,26 +274,23 @@ def run_summarization(content):
     
     st.write("### Select Sections to Summarize:")
 
-    # Full-width 5-column layout
-    cols = st.columns(5, gap="large")
+    # Full-width 4-column layout
+    cols = st.columns(4, gap="large")
     
     for idx, (section_key, section_title) in enumerate(summarization_sections.items()):
         with cols[idx]:  # Place buttons inside columns
             if st.button(section_title, key=f"btn_{section_key}"):
                 with st.spinner(f"📝 Processing {section_title}..."):
-                    section_value = get_section_prompt(section_title)
-                    if callable(section_value):
-                        response = section_value(content)
-                    else:
-                        retrieved_chunks = retrieving_process(content, section_value)
-                        reranked_docs = rerank_documents(retrieved_chunks, section_value)
-                        response = EC_ChatBot(reranked_docs, section_value)
-                        st.session_state.processed_results[section_key] = response
+                    prompt = get_section_prompt(section_title)
+                    retrieved_chunks = retrieving_process(content, prompt)
+                    reranked_docs = rerank_documents(retrieved_chunks, prompt)
+                    response = EC_ChatBot(reranked_docs, prompt)
+                    st.session_state.processed_results[section_key] = response
 
     st.write("### 📋 Summarized Results:")
     with st.container():
         for section_key, section_title in summarization_sections.items():
-            result = st.session_state.processed_results.get(section_key, "")
+            result = st.session_state.processed_results[section_key]
             if result:
                 with st.expander(section_title, expanded=True):
                     st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
