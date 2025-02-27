@@ -286,13 +286,16 @@ def run_summarization(content):
             if st.button(section_title, key=f"btn_{section_key}"):
                 with st.spinner(f"📝 Processing {section_title}..."):
                     section_value = get_section_prompt(section_title)
+                    
                     if callable(section_value):
-                        response = section_value(content)
+                        remarks_list = section_value(content)
+                        response = "\n\n".join(remarks_list)
                     else:
                         retrieved_chunks = retrieving_process(content, section_value)
                         reranked_docs = rerank_documents(retrieved_chunks, section_value)
                         response = EC_ChatBot(reranked_docs, section_value)
-                        st.session_state.processed_results[section_key] = response
+                    
+                    st.session_state.processed_results[section_key] = response
 
     st.write("### 📋 Summarized Results:")
     with st.container():
