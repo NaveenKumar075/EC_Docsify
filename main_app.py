@@ -402,7 +402,7 @@ def main():
                         font-weight: bold;">
                     🚀 **Whoa! You just skipped a step!** \n\n
                     You've been **redirected back to ChatBot Mode** because your PDF is missing 📄❌ \n\n
-                    👉 **Upload your document here first**, then hop over to Summarization Mode for the magic! ✨
+                    👉 **Upload your document here first**, then hop over to **Summarization Mode** for the magic! ✨
                     </div>
                 """, unsafe_allow_html=True)
                 selected = "ChatBot" # Force redirection to ChatBot mode
