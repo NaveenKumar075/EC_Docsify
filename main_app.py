@@ -414,7 +414,7 @@ def main():
             
             # Check if a PDF file is already uploaded
             if "content" in st.session_state and st.session_state["content"]:
-                st.success("✅ PDF file uploaded! You can proceed with ChatBot and Summarization mode!")
+                st.success("✅ PDF file uploaded. You can proceed with ChatBot and Summarization mode!")
             else:
                 st.subheader("Upload Your Files Here!")
                 uploaded_file = st.file_uploader("Upload your PDF 📑", type=["pdf"])
@@ -428,7 +428,7 @@ def main():
                         st.session_state.uploaded_file = uploaded_file
                         st.session_state.uploaded_filename = uploaded_file.name
                         st.session_state.content = pdf_extraction(uploaded_file)
-                        st.success("✅ File processed successfully! You can proceed with ChatBot and Summarization mode!")
+                        st.success("✅ File processed successfully. You can proceed with ChatBot and Summarization mode!")
                     
             # Don't ask for re-upload if content is already in session_state
             if 'content' not in st.session_state or not st.session_state["content"]:
