@@ -1,6 +1,7 @@
 .env
 __pycache__
 ecdoc_env
+.devcontainer
 .streamlit
 google_service_account_cred.json
 dependencies.md
