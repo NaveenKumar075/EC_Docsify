@@ -15,7 +15,7 @@ from legalgpt_EC import pdf_extraction, retrieving_process, rerank_documents, ex
 from custom_styles import apply_custom_css
 import warnings
 warnings.filterwarnings('ignore')
-st.set_option('server.enableFileWatcher', False)
+st.set_option('server.fileWatcherType', 'none')
 
 
 st.set_page_config(
