@@ -138,9 +138,14 @@ def extract_meta_details(context):
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
 def EC_ChatBot(reranked_docs, user_query): # model
+    unique_docs = {}
+    
     for doc in reranked_docs:
-        if "id" not in doc.metadata:
-            doc.metadata["id"] = str(uuid4())  # Add a unique ID if missing
+        doc.metadata["id"] = str(uuid4())  # Always assign a new unique ID
+        unique_docs[doc.metadata["id"]] = doc # Store unique docs in a dictionary
+        
+    # Convert back to a list of unique documents
+    reranked_docs = list(unique_docs.values())
     
     retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever() # Create FAISS retriever
     relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
