@@ -138,16 +138,27 @@ def extract_meta_details(context):
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
 def EC_ChatBot(reranked_docs, user_query): # model
-    unique_docs = {}
+    # Ensure every document has a unique ID
+    seen_ids = set()
+    unique_docs = []
     
     for doc in reranked_docs:
-        doc.metadata["id"] = str(uuid4())  # Always assign a new unique ID
-        unique_docs[doc.metadata["id"]] = doc # Store unique docs in a dictionary
+        new_id = str(uuid4())  # Always generate a new UUID
+        while new_id in seen_ids:  # Ensure uniqueness
+            new_id = str(uuid4())
         
-    # Convert back to a list of unique documents
-    reranked_docs = list(unique_docs.values())
+        doc.metadata["id"] = new_id
+        seen_ids.add(new_id)
+        unique_docs.append(doc)
     
-    retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever() # Create FAISS retriever
+    # Verify there are no duplicates before FAISS processing    
+    ids = [doc.metadata["id"] for doc in unique_docs]
+    duplicate_ids = {id for id in ids if ids.count(id) > 1}
+
+    if duplicate_ids:
+        raise ValueError(f"Duplicate IDs detected before FAISS indexing! {duplicate_ids}")
+    
+    retriever = FAISS.from_documents(unique_docs, embeddings).as_retriever() # Create FAISS retriever
     relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
     context = "\n\n".join([doc.page_content for doc in relevant_docs]) # Format the context as a string
     
