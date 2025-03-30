@@ -137,10 +137,7 @@ def extract_meta_details(context):
 
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
-def EC_ChatBot(reranked_docs, user_query):
-    for doc in reranked_docs:
-        doc.metadata["id"] = str(uuid4())  # Always assign a unique ID (overwrites existing ones)
-    
+def EC_ChatBot(reranked_docs, user_query):    
     retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever() # Create FAISS retriever
     relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
     context = "\n\n".join([doc.page_content for doc in relevant_docs]) # Format the context as a string
