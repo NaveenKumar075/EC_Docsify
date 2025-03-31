@@ -69,7 +69,7 @@ def retrieving_process(content, query):
     vector_retriever = vector_store.as_retriever()
 
     ensemble_retriever = EnsembleRetriever(retrievers=[bm25_retriever, vector_retriever], weights=[0.5, 0.5])
-    retrieved_chunks = ensemble_retriever.get_relevant_documents(query)[:5] # TODO: Check the retrieved_chunks length!
+    retrieved_chunks = ensemble_retriever.get_relevant_documents(query)[:7] # TODO: Check the retrieved_chunks length!
 
     return retrieved_chunks
 
@@ -83,12 +83,6 @@ def rerank_documents(retrieved_docs, query):
         doc.metadata["rerank_score"] = score
 
     reranked_docs = sorted(retrieved_docs, key=lambda x: x.metadata["rerank_score"], reverse=True)
-
-    # # Ensure unique IDs in reranked_docs
-    # for doc in reranked_docs:
-    #     if "id" not in doc.metadata:
-    #         doc.metadata["id"] = str(uuid4())  # Add a unique ID if missing
-    
     return reranked_docs[:3]
 
 # * -------------------------------------- Meta Details Extracion --------------------------------------
