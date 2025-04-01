@@ -6,9 +6,11 @@ from langchain.retrievers import BM25Retriever, EnsembleRetriever
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
+from langchain_community.docstore.in_memory import InMemoryDocstore
 from FlagEmbedding import FlagReranker
 from dotenv import load_dotenv
 from uuid import uuid4
+import faiss
 import os, sys, re, tempfile
 import pymupdf4llm, pymupdf
 import streamlit as st
@@ -131,8 +133,20 @@ def extract_meta_details(context):
 
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
-def EC_ChatBot(reranked_docs, user_query):    
-    retriever = FAISS.from_documents(reranked_docs, embeddings).as_retriever() # Create FAISS retriever
+def EC_ChatBot(reranked_docs, user_query):
+    dimension = 384 # Because, we're using "sentence-transformers/all-MiniLM-L6-v2"
+    index = faiss.IndexFlatL2(dimension)
+    
+    # Create FAISS vector store
+    vector_store = FAISS(
+        embedding_function=embeddings,
+        index=index,
+        docstore=InMemoryDocstore(),
+        index_to_docstore_id={},
+    )
+
+    vector_store.add_documents(reranked_docs) # Add all documents to the FAISS index
+    retriever = vector_store.as_retriever() # Create a retriever from the FAISS index
     relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
     context = "\n\n".join([doc.page_content for doc in relevant_docs]) # Format the context as a string
     
