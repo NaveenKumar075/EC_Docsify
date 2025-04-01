@@ -134,6 +134,13 @@ def extract_meta_details(context):
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
 
 def EC_ChatBot(reranked_docs, user_query):
+    if not reranked_docs:
+        return []  # Handle case where there are no documents
+
+    # Ensure all documents have unique IDs
+    for doc in reranked_docs:
+        doc.metadata["id"] = str(uuid4())  # Assign a new unique ID
+        
     dimension = 384 # Because, we're using "sentence-transformers/all-MiniLM-L6-v2"
     index = faiss.IndexFlatL2(dimension)
     
