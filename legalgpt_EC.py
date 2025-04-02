@@ -11,7 +11,7 @@ from FlagEmbedding import FlagReranker
 from dotenv import load_dotenv
 from uuid import uuid4
 import faiss
-import os, sys, re, tempfile
+import os, sys, re, tempfile, json
 import pymupdf4llm, pymupdf
 import streamlit as st
 import warnings
@@ -117,17 +117,23 @@ def extract_meta_details(context):
         - Providing responses strictly in Tamil.
         - Return ONLY the JSON output
         - Do NOT include explanatory text
+        - Do NOT use triple backticks (```)
         - Do NOT skip any fields
         - Do NOT hallucinate values
         - If information is not found, use empty string ('')
-        - Maintain exact format shown above
+        - Maintain exact JSON format shown above
         """
     )
 
     formatted_prompt = meta_details_prompt.format(context=context)
     response = model.invoke(formatted_prompt)
     extracted_details = response.content  # Assuming the LLM returns the details in a dictionary-like format
-    print(extracted_details)
+    
+    try:
+        extracted_details = json.loads(response.content.strip("`"))  
+    except json.JSONDecodeError as e:
+        print("JSON Parse Error:", e)
+        extracted_details = {}
     
     return extracted_details
 
