@@ -421,14 +421,31 @@ def main():
                 
                 if uploaded_file is not None:
                     if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
-                        with st.spinner("📤 Uploading in progress ..."):
+                        with st.spinner("📤 Uploading in progress..."):
                             upload_to_drive(uploaded_file, username)  # Upload to Google Drive
 
                         # Store filename to avoid reprocessing
                         st.session_state.uploaded_file = uploaded_file
                         st.session_state.uploaded_filename = uploaded_file.name
-                        st.session_state.content = pdf_extraction(uploaded_file)
-                        st.success("✅ File processed successfully. You can proceed with ChatBot and Summarization mode!")
+                        st.success("✅ File processed successfully. Click 'Process PDF' to extract content. 📜")
+                        
+                # "Process PDF" button
+                if st.session_state.uploaded_file is not None and st.button("🔄 Process PDF"):
+                    with st.status("📄 Extracting content...") as status:
+                        # Step 1: Extract Content
+                        st.session_state.content = pdf_extraction(st.session_state.uploaded_file)
+                        status.update(label="✅ Content extracted! Now extracting metadata...", state="running")
+                    
+                        # Step 2: Extract Metadata
+                        st.session_state.meta_details = extract_meta_details(st.session_state.content)
+                        status.update(label="✅ Metadetails are extracted! Process completed...", state="complete")
+
+                    st.success("✅ PDF Processed Successfully! You can now use ChatBot and Summarization mode! ✨")
+
+                # Display extracted metadata if available
+                if st.session_state.meta_details:
+                    st.subheader("📌 Extracted Metadata:")
+                    st.json(st.session_state.meta_details)
                     
             # Don't ask for re-upload if content is already in session_state
             if 'content' not in st.session_state or not st.session_state["content"]:
