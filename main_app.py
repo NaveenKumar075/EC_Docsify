@@ -448,7 +448,7 @@ def main():
                     st.json(st.session_state.meta_details)
                     
             # Don't ask for re-upload if content is already in session_state
-            if "uploaded_file" not in st.session_state:
+            if "uploaded_file" not in st.session_state or st.session_state.uploaded_file is None:
                 st.warning("🚨 Please upload a PDF file to proceed.")
                 st.stop()  # Prevent further execution
 
