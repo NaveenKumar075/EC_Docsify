@@ -427,7 +427,7 @@ def main():
                         # Store filename to avoid reprocessing
                         st.session_state.uploaded_file = uploaded_file
                         st.session_state.uploaded_filename = uploaded_file.name
-                        st.success("✅ File processed successfully. Click 'Process PDF' to extract content. 📜")
+                        st.success("✅ File processed successfully. Click 'Process PDF' to extract content📜")
                         
                 # "Process PDF" button
                 if st.session_state.uploaded_file is not None and st.button("🔄 Process PDF"):
@@ -437,10 +437,10 @@ def main():
                         status.update(label="✅ Content extracted! Now extracting metadata...", state="running")
                     
                         # Step 2: Extract Metadata
-                        st.session_state.meta_details = extract_meta_details(st.session_state.content[-7:-1])
+                        st.session_state.meta_details = extract_meta_details(st.session_state.content[-4:-1])
                         status.update(label="✅ Metadetails are extracted! Process completed...", state="complete")
 
-                    st.success("✅ PDF Processed Successfully! You can now use ChatBot and Summarization mode! ✨")
+                    st.success("✅ PDF Processed Successfully! You can now use ChatBot and Summarization mode!✨")
 
                 # Display extracted metadata if available
                 if st.session_state.meta_details:
