@@ -89,10 +89,11 @@ def rerank_documents(retrieved_docs, query):
 
 # * -------------------------------------- Meta Details Extracion --------------------------------------
 
-def stream_response(response_text):
-    """Simulates a streaming response."""
-    for word in response_text.split():
-        yield word + " "  # Yield word by word with spacing
+def stream_response(response_dict):
+    """ Generator function to stream JSON content """
+    json_string = json.dumps(response_dict, ensure_ascii=False, indent=2)  # Convert dict to JSON
+    for char in json_string:
+        yield char  # Stream character by character
 
 def extract_meta_details(context):
     """ Extracting the meta details from the context! """
@@ -119,8 +120,9 @@ def extract_meta_details(context):
         }}
         
         IMPORTANT:
-        - Providing responses strictly in Tamil.
-        - Return ONLY the JSON output
+        - Providing responses strictly in Tamil
+        - Return ONLY the JSON output (DO NOT wrap it inside ```json ... ```)
+        - Do NOT use triple backticks (` ``` `) or mention "json"
         - Do NOT include explanatory text
         - Do NOT skip any fields
         - Do NOT hallucinate values
@@ -131,8 +133,14 @@ def extract_meta_details(context):
 
     formatted_prompt = meta_details_prompt.format(context=context)
     response = model.invoke(formatted_prompt)
-    extracted_details = response.content  # Assuming the LLM returns the details in a dictionary-like format
     
+    raw_text = response.content.strip("```").replace("\n", "").strip()
+    try:
+        extracted_details = json.loads(raw_text)  # Convert to dictionary
+    except json.JSONDecodeError as e:
+        print("❌ JSON Parse Error:", e)
+        extracted_details = {}
+
     return st.write_stream(stream_response(extracted_details))
 
 # * -------------------------------------- ChatBot Setup: EC_ChatBot --------------------------------------
