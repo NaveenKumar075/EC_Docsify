@@ -183,9 +183,7 @@ def apply_custom_css():
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                 display: inline-block;
                 cursor: pointer;
-                width: auto;
-                min-width: 150px;
-                max-width: 60%;
+                width: 100%;
                 text-align: center;
             }
 
@@ -195,6 +193,8 @@ def apply_custom_css():
                 box-shadow: 0px 0px 20px rgba(255, 154, 158, 0.7);
                 transform: scale(1.05);
                 color: black;
+                font-size: 18px;
+                font-weight: bold;
             }
 
             /* 🔥 Swipe Right Animation */
