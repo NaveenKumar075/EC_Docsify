@@ -49,8 +49,6 @@ def apply_custom_css():
             [data-testid="stSidebarUserContent"] {
                 flex-grow: 0 !important; /* Prevents unnecessary stretching */
             }
-            
-            
 
             /* Fix for Logout Button */
             [data-testid="stBaseButton-secondary"] {
@@ -160,7 +158,7 @@ def apply_custom_css():
             }
 
             /* Hover effect for Logout */
-            .logout-btn:hover {
+            [data-testid="stBaseButton-secondary"]:hover {
                 background: linear-gradient(to right, #ff3d3d, #ff7e5f);
                 transform: scale(1.05);
             }
@@ -231,7 +229,7 @@ def apply_custom_css():
             }
             
             /* 🖥️ Enable Scrollbar on the Main Application Page */
-            [data-testid="stMain"] {
+            .main {
                 overflow-y: auto !important;
                 overflow-x: hidden; /* Prevents horizontal scrolling */
                 max-height: 100vh; /* Ensure scrolling is only for the main page */
