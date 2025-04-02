@@ -50,11 +50,7 @@ def apply_custom_css():
                 flex-grow: 0 !important; /* Prevents unnecessary stretching */
             }
             
-            /* Remove Extra Space Below Last Button */
-            [data-testid="stVerticalBlock"] {
-                margin-bottom: 0 !important; 
-                padding-bottom: 0 !important; 
-            }
+            
 
             /* Fix for Logout Button */
             [data-testid="stBaseButton-secondary"] {
