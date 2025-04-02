@@ -437,7 +437,7 @@ def main():
                         status.update(label="✅ Content extracted! Now extracting metadata...", state="running")
                     
                         # Step 2: Extract Metadata
-                        st.session_state.meta_details = extract_meta_details(st.session_state.content)
+                        st.session_state.meta_details = extract_meta_details(st.session_state.content[-7:-1])
                         status.update(label="✅ Metadetails are extracted! Process completed...", state="complete")
 
                     st.success("✅ PDF Processed Successfully! You can now use ChatBot and Summarization mode! ✨")

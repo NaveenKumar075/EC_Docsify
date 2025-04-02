@@ -46,23 +46,23 @@ def apply_custom_css():
             }
 
             /* Sidebar Menu Container */
-            .sidebar-content {
+            [data-testid="stSidebarUserContent"] {
                 flex-grow: 0 !important; /* Prevents unnecessary stretching */
             }
             
             /* Remove Extra Space Below Last Button */
-            .sidebar-menu {
+            [data-testid="stVerticalBlock"] {
                 margin-bottom: 0 !important; 
                 padding-bottom: 0 !important; 
             }
 
             /* Fix for Logout Button */
-            .logout-button {
+            [data-testid="stBaseButton-secondary"] {
                 margin-top: auto !important; /* Pushes it to the bottom */
             }
             
              /* Remove Empty Divs */
-            .sidebar-content > div:last-child {
+            [data-testid="stSidebarUserContent"] > div:last-child {
                 display: none !important;
             }
 
@@ -149,7 +149,7 @@ def apply_custom_css():
             }
 
             /* Logout Button */
-            .logout-btn {
+            [data-testid="stBaseButton-secondary"] {
                 background: linear-gradient(to right, #ff5e62, #ff9966);
                 color: white;
                 border: none;
@@ -181,9 +181,12 @@ def apply_custom_css():
                 background-size: 200% auto;
                 transition: 0.4s ease-in-out;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                display: block;
-                width: 100%;
+                display: inline-block;
                 cursor: pointer;
+                width: auto;
+                min-width: 150px;
+                max-width: 60%;
+                text-align: center;
             }
 
             /* 🌟 Hover Glow Effect */
@@ -232,7 +235,7 @@ def apply_custom_css():
             }
             
             /* 🖥️ Enable Scrollbar on the Main Application Page */
-            .main {
+            [data-testid="stMain"] {
                 overflow-y: auto !important;
                 overflow-x: hidden; /* Prevents horizontal scrolling */
                 max-height: 100vh; /* Ensure scrolling is only for the main page */
@@ -276,6 +279,10 @@ def apply_custom_css():
                 .stButton > button {
                     font-size: 16px;
                     padding: 10px 20px;
+                    cursor: pointer;
+                    display: inline-block; /* Keeps the button compact */
+                    width: auto; /* Prevents it from stretching */
+                    min-width: 150px;
                 }
 
                 .main-menu-title {
