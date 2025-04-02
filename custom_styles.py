@@ -46,17 +46,23 @@ def apply_custom_css():
             }
 
             /* Sidebar Menu Container */
-            [data-testid="stSidebarUserContent"] {
+            .sidebar-content {
                 flex-grow: 0 !important; /* Prevents unnecessary stretching */
+            }
+            
+            /* Remove Extra Space Below Last Button */
+            .sidebar-menu {
+                margin-bottom: 0 !important; 
+                padding-bottom: 0 !important; 
             }
 
             /* Fix for Logout Button */
-            [data-testid="stBaseButton-secondary"] {
+            .logout-button {
                 margin-top: auto !important; /* Pushes it to the bottom */
             }
             
              /* Remove Empty Divs */
-            [data-testid="stSidebarUserContent"] > div:last-child {
+            .sidebar-content > div:last-child {
                 display: none !important;
             }
 
@@ -143,7 +149,7 @@ def apply_custom_css():
             }
 
             /* Logout Button */
-            [data-testid="stBaseButton-secondary"] {
+            .logout-btn {
                 background: linear-gradient(to right, #ff5e62, #ff9966);
                 color: white;
                 border: none;
@@ -158,7 +164,7 @@ def apply_custom_css():
             }
 
             /* Hover effect for Logout */
-            [data-testid="stBaseButton-secondary"]:hover {
+            .logout-btn:hover {
                 background: linear-gradient(to right, #ff3d3d, #ff7e5f);
                 transform: scale(1.05);
             }
