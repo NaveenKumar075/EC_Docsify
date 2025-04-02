@@ -139,6 +139,7 @@ def EC_ChatBot(reranked_docs, user_query):
 
     # Ensure all documents have unique IDs
     for doc in reranked_docs:
+        doc.metadata.pop("id", None)  # Remove existing ID if present
         doc.metadata["id"] = str(uuid4())  # Assign a new unique ID
         
     dimension = 384 # Because, we're using "sentence-transformers/all-MiniLM-L6-v2"
