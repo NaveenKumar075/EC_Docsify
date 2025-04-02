@@ -138,9 +138,11 @@ def EC_ChatBot(reranked_docs, user_query):
         return []  # Handle case where there are no documents
 
     # Ensure all documents have unique IDs
+    doc_ids = []  # Store unique FAISS IDs
     for doc in reranked_docs:
-        doc.metadata.pop("id", None)  # Remove existing ID if present
-        doc.metadata["id"] = str(uuid4())  # Assign a new unique ID
+        unique_id = str(uuid4())  # Generate a fresh unique ID
+        doc.metadata["id"] = unique_id
+        doc_ids.append(unique_id)  # Collect IDs for FAISS
         
     dimension = 384 # Because, we're using "sentence-transformers/all-MiniLM-L6-v2"
     index = faiss.IndexFlatL2(dimension)
@@ -153,7 +155,12 @@ def EC_ChatBot(reranked_docs, user_query):
         index_to_docstore_id={},
     )
 
-    vector_store.add_documents(reranked_docs) # Add all documents to the FAISS index
+    # Extract texts and metadata
+    texts = [doc.page_content for doc in reranked_docs]
+    metadatas = [doc.metadata for doc in reranked_docs]
+
+    # Add documents explicitly with unique IDs
+    vector_store.add_texts(texts=texts, metadatas=metadatas, ids=doc_ids)
     retriever = vector_store.as_retriever() # Create a retriever from the FAISS index
     relevant_docs = retriever.invoke(user_query) # Fetch relevant documents based on the user query
     context = "\n\n".join([doc.page_content for doc in relevant_docs]) # Format the context as a string
