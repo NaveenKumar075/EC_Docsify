@@ -18,10 +18,10 @@ warnings.filterwarnings('ignore')
 
 
 st.set_page_config(
-        page_title="EC Docsify", 
-        page_icon="🚀", 
-        initial_sidebar_state="expanded",
-        layout="wide")
+        page_title="Yeecy.ai", 
+        page_icon="🏡", 
+        layout="centered", 
+        initial_sidebar_state="collapsed")
 
 apply_custom_css()
 

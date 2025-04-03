@@ -5,10 +5,9 @@ def apply_custom_css():
     st.markdown("""
         <style>
             /* 🌟 Light Theme Background */
-            body {
-                background: linear-gradient(to right, #f8f9fa, #e3e7eb, #dde4eb);
-                color: #2c3e50;
-                font-family: 'Poppins', sans-serif;
+            .stApp {
+                background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ff 100%);
+                font-family: 'Roboto', sans-serif;
                 animation: fadeIn 1s ease-in-out;
             }
 
