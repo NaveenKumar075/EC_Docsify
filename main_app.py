@@ -2,6 +2,8 @@ import re, time, json, shortuuid, requests
 import pyrebase
 import streamlit as st
 import tempfile
+import base64
+from pathlib import Path
 from datetime import datetime, timedelta
 from io import BytesIO
 from streamlit_lottie import st_lottie
@@ -57,7 +59,10 @@ def initialize_session_state():
         'uploaded_file': None,
         'content': None,
         'meta_details': None,
-        'chat_history': []
+        'chat_history': [],
+        'page': 'signin',
+        'page_loaded': False,
+        'logout_triggered': False
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -173,17 +178,12 @@ def store_session(user_data):
 # Function to check session from cookies
 def check_session():
     user_data = cookie_controller.get("user_session")
-    
-    if "page_loaded" not in st.session_state:
-        st.session_state.page_loaded = False  # Handles login
-    if "logout_triggered" not in st.session_state:
-        st.session_state.logout_triggered = False  # Handles logout
         
     if user_data:
         st.session_state['authenticated'] = True
         st.session_state['user'] = user_data
         
-        if not st.session_state.page_loaded: # Show loader on first login
+        if not st.session_state.page_loaded:
             st.session_state.page_loaded = True
     else:
         st.session_state['authenticated'] = False
@@ -193,6 +193,91 @@ def check_session():
         if st.session_state.logout_triggered:
             st.session_state.page_loaded = False
             st.session_state.logout_triggered = False  # Reset logout flag
+            
+# Utility for switching page
+def switch_page(target):
+    st.session_state.page = target
+    st.rerun()
+
+# Load custom CSS
+def load_css():
+    with open('style.css', 'r') as f:
+        css = f.read()
+    st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
+
+# Image utilities
+def img_to_bytes(img_path):
+    return base64.b64encode(Path(img_path).read_bytes()).decode()
+
+def img_to_html(img_path):
+    return f"<img src='data:image/png;base64,{img_to_bytes(img_path)}' class='chatbot-icon'>"
+
+
+# --- Signin Page ---
+def signin_page():
+    st.markdown(f"""
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-left">
+                    {img_to_html("static/Yeecy_ai_icon.png")}
+                </div>
+                <div class="auth-right">
+                    <h1>Welcome Back!</h1>
+                    <p>Talk to your EC documents.<br>Get instant summaries and insights.</p>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    with st.form(key="signin_form"):
+        email = st.text_input("Email", placeholder="Enter your email", key="signin_email")
+        password = st.text_input("Password", placeholder="Enter your password", type="password", key="signin_password")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.form_submit_button(label="Sign In"):
+            if email and password:
+                login(email, password)
+            else:
+                st.markdown('<div class="notification error"><p>Please fill in all fields.</p></div>', unsafe_allow_html=True)
+
+    if st.button("Don't have an account? Sign Up", key="to_signup"):
+        switch_page("signup")
+
+
+# --- Signup Page ---
+def signup_page():
+    st.markdown(f"""
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-left">
+                    {img_to_html("static/Yeecy_ai_icon.png")}
+                </div>
+                <div class="auth-right">
+                    <h1>Get Started :)</h1>
+                    <p>Create an account to chat with <br>your EC docs in seconds!</p>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    with st.form(key="signup_form"):
+        username = st.text_input("Username", placeholder="Choose a username", key="signup_username")
+        email = st.text_input("Email", placeholder="Enter your email", key="signup_email")
+        password = st.text_input("Password", placeholder="Create a password", type="password", key="signup_password")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.form_submit_button(label="Sign Up"):
+            if username and email and password:
+                signup(email, password, username)
+                st.info("Please log in to access your account.")
+                switch_page("signin")
+            else:
+                st.markdown('<div class="notification error"><p>Please fill in all fields.</p></div>', unsafe_allow_html=True)
+
+    if st.button("Already have an account? Sign In", key="to_signin"):
+        switch_page("signin")
 
 
 # Google Drive upload function
@@ -308,43 +393,31 @@ def run_summarization(content):
         
 # Streamlit UI setup
 def main():
+    load_css() # Loading the custom CSS
     check_session() # Call session check
     
-    st.title("EC Docsify 🤖")
+    st.markdown("""
+    <h1 style="text-align: center; color: #6a11cb; animation: slideIn 0.5s ease forwards;">
+        🏠 Yeecy.ai ✨
+    </h1>
+    """, unsafe_allow_html=True)
     
     if not st.session_state.page_loaded:
         with HyLoader('', Loaders.pretty_loaders,index=[0]):
-            time.sleep(2)
-        
-    if not st.session_state.get('authenticated', False):
-        st.sidebar.header("Authentication")
-        choice = st.sidebar.radio("Choose an option", ["Login", "Signup"])
-        with st.sidebar.form(key="auth_form"):
-            email = st.text_input("Email", key="email")
-            password = st.text_input("Password", type="password", key="password")
-            
-            if choice == "Signup":
-                username = st.text_input("Username")
-            else:
-                username = None  # No username needed for login
-
-            submit_button = st.form_submit_button(label="Submit")
-            if submit_button:
-                if choice == "Login":
-                    login(email, password)                
-                elif choice == "Signup":
-                    if username:
-                        signup(email, password, username)
-                        st.info("Please do login to access your account.")
-                    else:
-                        st.warning("Please provide a username to complete the signup.")
+            time.sleep(1)
+    
+    if not st.session_state['authenticated']:
+        if st.session_state.page == 'signin':
+            signin_page()
+        else:
+            signup_page()
 
     else:
         username = st.session_state['user'].get('username', 'User')
-        st.sidebar.success(f"Welcome back, {username} ✨")
+        st.sidebar.success(f"Welcome back, {username} 👋")
         
         st.title("Welcome to EC Docsify!")
-        st.write("This is the new interface for logged-in users.")
+        st.write("AI-Driven Accuracy, Simplified EC Verification.")
         
         with st.sidebar:
             st.sidebar.markdown(
@@ -417,7 +490,7 @@ def main():
                 st.success("✅ PDF file uploaded. You can proceed with ChatBot and Summarization mode!")
             else:
                 st.subheader("Upload Your Files Here!")
-                uploaded_file = st.file_uploader("Upload your PDF 📑", type=["pdf"])
+                uploaded_file = st.file_uploader("Upload your PDF 📑 and click '🔄 Process PDF'", type=["pdf"])
                 
                 if uploaded_file is not None:
                     if 'uploaded_filename' not in st.session_state or st.session_state.uploaded_filename != uploaded_file.name:
@@ -485,6 +558,15 @@ def main():
         # Logout function          
         if st.sidebar.button("Logout"):
             logout()
+
+    
+    st.markdown("""
+    <div style="text-align: center; margin-top: 3rem; color: #666; font-size: 1.0rem; animation: fadeIn 1s ease forwards 1s; opacity: 0;">
+        <a href="https://yeecy-ai.streamlit.app/" target="_blank" style="color: #6a11cb; text-decoration: none; font-weight: 600;">
+            Yeecy.ai ❤️ 
+        </a> | Copyrights Reserved © 2025
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
