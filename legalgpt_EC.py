@@ -1,6 +1,6 @@
 from langchain_groq import ChatGroq
 from langchain.schema import Document
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.retrievers import BM25Retriever, EnsembleRetriever
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
@@ -24,7 +24,7 @@ sys.path.append(path)
 
 groq_api_key = st.secrets["general"]["GROQ_API_KEY"]
 model = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.3-70b-versatile", temperature=0) # llama-3.3-70b-versatile | deepseek-r1-distill-llama-70b
-embeddings = SentenceTransformerEmbeddings(model_name='paraphrase-multilingual-MiniLM-L12-v2') # ai4bharat/indic-bert | all-mpnet-base-v1 | all-MiniLM-L6-v2
+embeddings = HuggingFaceEmbeddings(model_name='paraphrase-multilingual-MiniLM-L12-v2') # all-MiniLM-L6-v2 | paraphrase-multilingual-MiniLM-L12-v2 | all-mpnet-base-v1
 reranker = FlagReranker('BAAI/bge-reranker-base', use_fp16=False) # Re-ranker model
 
 # * -------------------------------------- PDF Extraction --------------------------------------
