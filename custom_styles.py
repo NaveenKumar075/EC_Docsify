@@ -180,7 +180,7 @@ def apply_custom_css():
                 background-size: 200% auto;
                 transition: 0.4s ease-in-out;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                display: inline-block;
+                display: block;
                 cursor: pointer;
                 width: 100%;
                 text-align: center;
@@ -279,8 +279,8 @@ def apply_custom_css():
                     font-size: 16px;
                     padding: 10px 20px;
                     cursor: pointer;
-                    display: inline-block; /* Keeps the button compact */
-                    width: auto; /* Prevents it from stretching */
+                    display: block;
+                    width: auto;
                     min-width: 150px;
                 }
 
