@@ -414,7 +414,13 @@ def main():
 
     else:
         username = st.session_state['user'].get('username', 'User')
-        st.sidebar.success(f"Welcome back, {username} 👋")
+        email_id = st.session_state['user'].get('email', 'user@gmail.com')
+        st.sidebar.markdown(f"""
+        <div style="padding: 10px; border-radius: 10px; background-color: #f0f0f0;">
+            <h4>👋 Welcome, <span style="color:#8AAAE5;">{username}</span></h4>
+            <p style="font-size: 13px;">Logged in with <code>{email_id}</code></p>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.title("Welcome to EC Docsify!")
         st.write("AI-Driven Accuracy, Simplified EC Verification.")
@@ -561,8 +567,8 @@ def main():
 
     
     st.markdown("""
-    <div style="text-align: center; margin-top: 3rem; color: #666; font-size: 1.0rem; animation: fadeIn 1s ease forwards 1s; opacity: 0;">
-        <a href="https://yeecy-ai.streamlit.app/" target="_blank" style="color: #6a11cb; text-decoration: none; font-weight: 600;">
+    <div style="text-align: center; margin-top: auto; color: #666; font-size: 1.0rem; padding: 1rem 0; animation: fadeIn 1s ease forwards 1s; opacity: 0;">
+        <a href="https://yeecy-ai.streamlit.app/" style="color: #6a11cb; text-decoration: none; font-weight: 600;">
             Yeecy.ai ❤️ 
         </a> | Copyrights Reserved © 2025
     </div>
