@@ -102,7 +102,7 @@ def extract_meta_details(context):
         template="""
         You are provided with a document. Extract the following details:
         1. Property Value (Mentioned Market Value)
-        2. Current Owner (Last mentioned person name or bank name of this property)
+        2. Current Owner (Last mentioned person name or bank name of this property or the last claimant)
         3. Property Location (Address Details)
         4. Last Property Type
         5. Last Property Extent
