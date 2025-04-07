@@ -24,7 +24,7 @@ sys.path.append(path)
 
 groq_api_key = st.secrets["general"]["GROQ_API_KEY"]
 model = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.3-70b-versatile", temperature=0) # llama-3.3-70b-versatile | deepseek-r1-distill-llama-70b
-embeddings = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2') # all-MiniLM-L6-v2 | paraphrase-multilingual-MiniLM-L12-v2 | all-mpnet-base-v1
+embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2') # all-MiniLM-L6-v2 | paraphrase-multilingual-MiniLM-L12-v2 | all-mpnet-base-v1
 reranker = FlagReranker('BAAI/bge-reranker-base', use_fp16=False) # Re-ranker model
 
 # * -------------------------------------- PDF Extraction --------------------------------------
