@@ -1,7 +1,7 @@
 from langchain_groq import ChatGroq
 from langchain.schema import Document
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFaceEndpoint
+# from langchain_huggingface import HuggingFaceEndpoint
 from langchain_community.vectorstores import FAISS
 from langchain.retrievers import BM25Retriever, EnsembleRetriever
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
@@ -25,9 +25,9 @@ sys.path.append(path)
 
 groq_api_key = st.secrets["general"]["GROQ_API_KEY"]
 model = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.3-70b-versatile", temperature=0) # llama-3.3-70b-versatile | deepseek-r1-distill-llama-70b
-# embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2') # all-MiniLM-L6-v2 | paraphrase-multilingual-MiniLM-L12-v2 | all-mpnet-base-v1
-huggingface_api_token = st.secrets["general"]["HUGGINGFACE_API_TOKEN"]
-embeddings = HuggingFaceEndpoint(huggingface_api_token=huggingface_api_token, repo_id='sentence-transformers/all-MiniLM-L6-v2')
+embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2') # all-MiniLM-L6-v2 | paraphrase-multilingual-MiniLM-L12-v2 | all-mpnet-base-v1
+# huggingface_api_token = st.secrets["general"]["HUGGINGFACE_API_TOKEN"]
+# embeddings = HuggingFaceEndpoint(huggingface_api_token=huggingface_api_token, repo_id='sentence-transformers/all-MiniLM-L6-v2')
 reranker = FlagReranker('BAAI/bge-reranker-base', use_fp16=False) # Re-ranker model
 
 # * -------------------------------------- PDF Extraction --------------------------------------
