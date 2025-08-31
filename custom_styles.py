@@ -180,9 +180,12 @@ def apply_custom_css():
                 background-size: 200% auto;
                 transition: 0.4s ease-in-out;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                display: block;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: auto;
+                white-space: nowrap;
                 cursor: pointer;
-                width: 100%;
                 text-align: center;
             }
 
@@ -280,8 +283,9 @@ def apply_custom_css():
                     padding: 10px 20px;
                     cursor: pointer;
                     display: block;
-                    width: auto;
+                    width: 100%;
                     min-width: 150px;
+                    text-align: center;
                 }
 
                 .main-menu-title {

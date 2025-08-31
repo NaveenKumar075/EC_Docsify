@@ -168,6 +168,14 @@
     transform: scale(1.03);
 }
 
+/* Reset button orientation everywhere */
+div.stButton > button {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    white-space: nowrap !important;
+}
+
 /* Center the full Streamlit button container */
 div[data-testid="stElementContainer"][class*="key-to_signup"] {
     display: flex !important;
