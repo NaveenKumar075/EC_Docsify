@@ -304,9 +304,9 @@ def summarization_custom_css():
             .stButton > button {
                 background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
                 color: white;
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: bold;
-                padding: 15px 45px;
+                padding: 12px 20px;
                 text-transform: none;
                 border: none;
                 border-radius: 15px;
@@ -316,11 +316,15 @@ def summarization_custom_css():
                 display: block;
                 width: 100%;
                 cursor: pointer;
+                white-space: normal;
+                word-wrap: break-word;
+                min-height: 60px;
+                line-height: 1.3;
             }
 
             .stButton > button:hover {
                 background-position: right center;
-                transform: scale(1.07);
+                transform: scale(1.05);
                 box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6);
                 transition: 0.3s ease-in-out;
                 color: black;
@@ -364,7 +368,7 @@ def run_summarization(content):
     st.write("### Select Sections to Summarize:")
 
     # Full-width 5-column layout
-    cols = st.columns(5, gap="large")
+    cols = st.columns(5, gap="small")
     
     for idx, (section_key, section_title) in enumerate(summarization_sections.items()):
         with cols[idx]:  # Place buttons inside columns
