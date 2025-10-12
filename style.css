@@ -16,10 +16,6 @@
     box-shadow: 0 8px 30px rgba(138, 43, 226, 0.15);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform: translateY(0);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .auth-container:hover {
@@ -30,21 +26,13 @@
 /* Header styling */
 .auth-header {
     display: flex;
-    justify-content: center;        /* Center the whole block horizontally */
-    align-items: center;            /* Vertically center logo + text */
-    text-align: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;                /* Helps responsiveness */
+    align-items: center;
+    gap: 2rem;
 }
 
-/* Ensure left and right parts shrink nicely */
-.auth-left, .auth-right {
-    flex: 0 1 auto !important;
-}
-
-/* Make all text content center-aligned */
-.auth-right {
-    text-align: center;
+/* Left icon */
+.auth-left {
+    flex: 0 0 170px;
 }
 
 .chatbot-icon {
@@ -52,6 +40,11 @@
     max-width: 120px;
     height: auto;
     filter: drop-shadow(0px 4px 10px rgba(106, 17, 203, 0.2));
+}
+
+/* Right text */
+.auth-right {
+    flex: 1;
 }
 
 .auth-right h1 {
@@ -190,8 +183,6 @@ div[data-testid="stElementContainer"][class*="key-to_signup"] {
     align-items: center !important;
     text-align: center !important;
     width: 100% !important;
-    margin-top: 1rem !important;
-    margin-bottom: 0.5rem !important;
 }
 
 /* Target the inner button wrapper */
@@ -324,16 +315,14 @@ header {visibility: hidden;}
         flex-direction: column;
         text-align: center;
         align-items: center;
-        justify-content: center;
-        gap: 0.8rem;
+        gap: 0.5rem;
     }
 
     .auth-left img,
     .chatbot-icon {
-        display: block;
-        margin: 0 auto;
-        width: 120px;
-        height: auto;
+        max-width: 220px;
+        margin-top: 15px !important;
+        margin-bottom: 0.3rem !important;
     }
 
     .auth-right {
