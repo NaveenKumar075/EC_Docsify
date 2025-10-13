@@ -543,6 +543,33 @@ def main():
                     ☰
                 </button>
             """, unsafe_allow_html=True)
+            
+        # GLOBAL LOGO - Appears on ALL pages
+        st.markdown("""
+            <style>
+            .global-logo {
+                position: fixed;
+                top: 15px;
+                right: 25px;
+                z-index: 9999;
+                width: 80px;
+                height: auto;
+                filter: drop-shadow(0px 4px 10px rgba(106, 17, 203, 0.3));
+                transition: transform 0.3s ease;
+            }
+            .global-logo:hover {
+                transform: scale(1.1);
+            }
+            </style>
+        """, unsafe_allow_html=True)
+        
+        # Display logo on all pages
+        logo_path = "static/Yeecy.ai_logo.png"
+        try:
+            logo_base64 = img_to_bytes(logo_path)
+            st.markdown(f'<img src="data:image/png;base64,{logo_base64}" class="global-logo" alt="Yeecy.ai Logo">', unsafe_allow_html=True)
+        except:
+            pass
         
         # Check before redirecting to Summarization mode
         if selected == "Summarization":
@@ -564,37 +591,10 @@ def main():
                 selected = "ChatBot" # Force redirection to ChatBot mode
         
         # ========== WELCOME PAGE - ADD THIS SECTION HERE ==========
-        if selected == 'Welcome':
-            # Logo styling - smaller size
-            st.markdown("""
-                <style>
-                .welcome-logo {
-                    position: fixed;
-                    top: 15px;
-                    right: 25px;
-                    z-index: 999;
-                    width: 80px;
-                    height: auto;
-                    filter: drop-shadow(0px 4px 10px rgba(106, 17, 203, 0.3));
-                    transition: transform 0.3s ease;
-                }
-                .welcome-logo:hover {
-                    transform: scale(1.1);
-                }
-                </style>
-            """, unsafe_allow_html=True)
-            
-            # Display logo
-            logo_path = "static/Yeecy.ai_logo.png"
-            try:
-                logo_base64 = img_to_bytes(logo_path)
-                st.markdown(f'<img src="data:image/png;base64,{logo_base64}" class="welcome-logo" alt="Yeecy.ai Logo">', unsafe_allow_html=True)
-            except:
-                pass
-            
+        if selected == 'Welcome':            
             # Hero Section
             st.markdown("""
-                <div style="text-align: center; padding: 3rem 1rem 2rem 1rem;">
+                <div style="text-align: center; padding: 1rem 1rem 1.5rem 1rem;">
                     <h1 style="
                         font-size: 2.8rem; 
                         font-weight: 700; 
@@ -602,7 +602,7 @@ def main():
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                         background-clip: text;
-                        margin-bottom: 1rem;
+                        margin-bottom: 0.8rem;
                         line-height: 1.3;
                     ">
                         Welcome to AI-Powered<br>Encumbrance Certificate Verification
