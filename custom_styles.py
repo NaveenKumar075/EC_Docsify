@@ -292,6 +292,40 @@ def apply_custom_css():
                     font-size: 18px;
                 }
             }
+            
+             /* Custom Scrollbar Styling for Main Page */
+            [data-testid="stSidebar"]::-webkit-scrollbar,
+            .main::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            [data-testid="stSidebar"]::-webkit-scrollbar-track,
+            .main::-webkit-scrollbar-track {
+                background: #f1f3f5;
+            }
+            
+            [data-testid="stSidebar"]::-webkit-scrollbar-thumb,
+            .main::-webkit-scrollbar-thumb {
+                background: #4da8da;
+                border-radius: 10px;
+            }
+            
+            [data-testid="stSidebar"]::-webkit-scrollbar-thumb:hover,
+            .main::-webkit-scrollbar-thumb:hover {
+                background: #41c7c7;
+            }
+            
+            /* Global button orientation fix */
+            button[kind="primary"],
+            button[kind="secondary"],
+            .stButton > button,
+            .stFormSubmitButton > button {
+                writing-mode: horizontal-tb !important;
+                text-orientation: mixed !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
         </style>
 
     """, unsafe_allow_html=True)

@@ -133,6 +133,12 @@
     width: 50%;
     margin-top: 0.5rem;
     box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .stFormSubmitButton > button:hover {
