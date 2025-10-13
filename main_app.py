@@ -566,8 +566,166 @@ def main():
                 """, unsafe_allow_html=True)
                 selected = "ChatBot" # Force redirection to ChatBot mode
         
+        # ========== WELCOME PAGE - ADD THIS SECTION HERE ==========
+        if selected == 'Welcome':
+            # Logo at top left corner
+            st.markdown("""
+                <style>
+                .welcome-logo {
+                    position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 999;
+                    width: 120px;
+                    height: auto;
+                    filter: drop-shadow(0px 4px 10px rgba(106, 17, 203, 0.2));
+                    transition: transform 0.3s ease;
+                }
+                .welcome-logo:hover {
+                    transform: scale(1.05);
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            
+            # Display logo using base64 encoding
+            logo_path = "static/Yeecy.ai_logo.png"
+            try:
+                logo_base64 = img_to_bytes(logo_path)
+                st.markdown(f"""
+                    <img src="data:image/png;base64,{logo_base64}" class="welcome-logo" alt="Yeecy.ai Logo">
+                """, unsafe_allow_html=True)
+            except:
+                pass  # If logo not found, continue without it
+            
+            # Welcome page content with proper styling
+            st.markdown("""
+                <div style="text-align: center; padding: 2rem 0 1rem 0; margin-top: 60px;">
+                    <h1 style="
+                        font-size: 2.5rem; 
+                        font-weight: 700; 
+                        background: linear-gradient(45deg, #6a11cb, #8e44ad);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                        margin-bottom: 0.5rem;
+                    ">
+                        Welcome to AI-Powered Encumbrance Certificate Verification
+                    </h1>
+                    <p style="
+                        font-size: 1.2rem; 
+                        color: #666; 
+                        font-style: italic;
+                        margin-top: 0.5rem;
+                    ">
+                        "AI-Driven Accuracy, Simplified EC Verification."
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Main description
+            st.markdown("""
+                <div style="
+                    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+                    padding: 2rem;
+                    border-radius: 15px;
+                    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.1);
+                    margin-bottom: 2rem;
+                ">
+                    <p style="
+                        font-size: 1.15rem;
+                        line-height: 1.8;
+                        color: #333;
+                        text-align: center;
+                        margin-bottom: 0;
+                    ">
+                        Say goodbye to tedious manual checks. Our AI-powered platform transforms how you verify property documents, ensuring <strong>speed, accuracy, and convenience</strong>.
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Features section with cards
+            st.markdown("""
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                    
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        border-left: 4px solid #6a11cb;
+                    ">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📤</div>
+                        <h3 style="color: #6a11cb; margin-bottom: 0.5rem; font-size: 1.2rem;">Effortless Verification</h3>
+                        <p style="color: #666; line-height: 1.6; margin: 0;">Upload your EC in PDF format for instant analysis.</p>
+                    </div>
+                    
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        border-left: 4px solid #8e44ad;
+                    ">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+                        <h3 style="color: #8e44ad; margin-bottom: 0.5rem; font-size: 1.2rem;">Save Time</h3>
+                        <p style="color: #666; line-height: 1.6; margin: 0;">Get results in minutes with AI-powered precision.</p>
+                    </div>
+                    
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        border-left: 4px solid #6a11cb;
+                    ">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+                        <h3 style="color: #6a11cb; margin-bottom: 0.5rem; font-size: 1.2rem;">Secure Management</h3>
+                        <p style="color: #666; line-height: 1.6; margin: 0;">Safely store and access all your ECs in one place.</p>
+                    </div>
+                    
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        border-left: 4px solid #8e44ad;
+                    ">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💬</div>
+                        <h3 style="color: #8e44ad; margin-bottom: 0.5rem; font-size: 1.2rem;">Interactive Insights</h3>
+                        <p style="color: #666; line-height: 1.6; margin: 0;">Ask questions within the document for instant answers.</p>
+                    </div>
+                    
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Call to action
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style="
+                    text-align: center;
+                    padding: 2rem;
+                    background: linear-gradient(45deg, #6a11cb, #8e44ad);
+                    border-radius: 15px;
+                    margin: 2rem 0;
+                    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.3);
+                ">
+                    <h2 style="color: white; margin-bottom: 1rem; font-size: 1.8rem;">
+                        Experience a smarter, faster way to verify ECs.
+                    </h2>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; margin: 0;">
+                        Start now by uploading your document in ChatBot mode!
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
+        # ========== END OF WELCOME PAGE SECTION ==========
         
-        if selected == 'ChatBot':
+        elif selected == 'ChatBot':
             st.header("Chatbot Mode")
             st.write("Ask questions about the uploaded document.")
             
