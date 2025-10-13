@@ -408,7 +408,7 @@ def run_summarization(content):
     st.write("### Select Sections to Summarize:")
 
     # Full-width 5-column layout
-    cols = st.columns(5, gap="small")
+    cols = st.columns([1, 1, 1, 1, 1], gap="medium") #* cols = st.columns(5, gap="small") --> (Existing)
     
     for idx, (section_key, section_title) in enumerate(summarization_sections.items()):
         with cols[idx]:  # Place buttons inside columns
@@ -510,42 +510,80 @@ def main():
                 "nav-link-selected": {"background-color": "#8AAAE5"}},
                 default_index=0
             )
-            
-            # Add manual sidebar toggle button if sidebar is collapsed
-            if 'sidebar_state' not in st.session_state:
-                st.session_state.sidebar_state = 'expanded'
-            
-            # Create a floating button to toggle sidebar
+        
+            # ===== ADD THIS FLOATING MENU BUTTON =====
             st.markdown("""
                 <style>
-                .sidebar-toggle-btn {
+                /* Floating menu button - always visible */
+                .floating-menu-btn {
                     position: fixed;
-                    top: 10px;
-                    left: 10px;
+                    top: 20px;
+                    left: 20px;
                     z-index: 999999;
-                    background: linear-gradient(45deg, #6a11cb, #8e44ad);
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     color: white;
                     border: none;
-                    border-radius: 50%;
-                    width: 50px;
-                    height: 50px;
-                    font-size: 24px;
+                    border-radius: 12px;
+                    width: 60px;
+                    height: 60px;
+                    font-size: 28px;
                     cursor: pointer;
-                    box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3);
+                    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     transition: all 0.3s ease;
+                    font-weight: bold;
                 }
-                .sidebar-toggle-btn:hover {
-                    transform: scale(1.1);
-                    box-shadow: 0 6px 16px rgba(106, 17, 203, 0.5);
+                .floating-menu-btn:hover {
+                    transform: scale(1.1) rotate(90deg);
+                    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.6);
+                    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                }
+                
+                /* Show button only when sidebar is collapsed */
+                [data-testid="stSidebar"][aria-expanded="true"] ~ div .floating-menu-btn {
+                    display: none !important;
+                }
+                
+                /* Ensure button appears when sidebar is hidden */
+                .floating-menu-btn {
+                    display: flex !important;
+                }
+                
+                /* Hide native collapse button styling issues */
+                button[kind="header"] {
+                    background: transparent !important;
                 }
                 </style>
-                <button class="sidebar-toggle-btn" onclick="document.querySelector('[data-testid=\\'stSidebar\\']').style.display = document.querySelector('[data-testid=\\'stSidebar\\']').style.display === 'none' ? 'block' : 'none'">
-                    ☰
-                </button>
+                
+                <script>
+                // Force show floating button when sidebar is collapsed
+                document.addEventListener('DOMContentLoaded', function() {
+                    const checkSidebar = setInterval(function() {
+                        const sidebar = document.querySelector('[data-testid="stSidebar"]');
+                        const floatingBtn = document.querySelector('.floating-menu-btn');
+                        
+                        if (sidebar && floatingBtn) {
+                            const isCollapsed = window.getComputedStyle(sidebar).marginLeft === '-21rem';
+                            floatingBtn.style.display = isCollapsed ? 'flex' : 'none';
+                        }
+                    }, 100);
+                });
+                </script>
             """, unsafe_allow_html=True)
+            
+            # Check if sidebar is collapsed and show button
+            if 'sidebar_collapsed' not in st.session_state:
+                st.session_state.sidebar_collapsed = False
+            
+            # Create columns for the floating button
+            button_col1, button_col2 = st.columns([1, 20])
+            with button_col1:
+                if st.button("☰", key="toggle_sidebar_btn", help="Open Menu"):
+                    st.session_state.sidebar_collapsed = not st.session_state.sidebar_collapsed
+                    st.rerun()
+            # ===== END OF FLOATING MENU BUTTON =====
         
         # Check before redirecting to Summarization mode
         if selected == "Summarization":
