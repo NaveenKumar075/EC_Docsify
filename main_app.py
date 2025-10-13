@@ -296,57 +296,78 @@ def upload_to_drive(file, username):
 def summarization_custom_css():
     st.markdown("""
         <style>
-            /* Force equal column widths */
+            /* Remove default streamlit column styling */
             div[data-testid="column"] {
-                flex: 1 1 0 !important;
-                min-width: 0 !important;
-                max-width: none !important;
+                padding: 0 5px !important;
             }
             
-            /* Summarization buttons - PERMANENT FIX */
+            /* Container for all buttons */
+            div[data-testid="stHorizontalBlock"] {
+                gap: 15px !important;
+                display: flex !important;
+                flex-wrap: nowrap !important;
+            }
+            
+            /* Summarization buttons - FIXED LAYOUT */
             div[data-testid="column"] .stButton {
                 width: 100% !important;
-                display: block !important;
+                margin: 0 !important;
             }
             
             div[data-testid="column"] .stButton > button {
+                /* Background and colors - WHITE TEXT */
                 background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%) !important;
                 color: white !important;
-                font-size: 13px !important;
-                font-weight: bold !important;
-                padding: 12px 8px !important;
-                text-transform: none !important;
-                border: none !important;
-                border-radius: 15px !important;
-                background-size: 200% auto !important;
-                transition: 0.5s ease-in-out !important;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
-                width: 100% !important;
-                cursor: pointer !important;
                 
-                /* CRITICAL: Force horizontal text */
-                white-space: normal !important;
-                word-wrap: break-word !important;
-                word-break: break-word !important;
-                min-height: 70px !important;
+                /* Typography */
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                text-transform: none !important;
+                
+                /* Layout */
+                border: none !important;
+                border-radius: 12px !important;
+                padding: 15px 10px !important;
+                width: 100% !important;
+                min-height: 80px !important;
                 height: auto !important;
-                line-height: 1.3 !important;
+                
+                /* Flexbox for centering */
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 text-align: center !important;
+                
+                /* Text wrapping */
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                line-height: 1.4 !important;
+                
+                /* Critical orientation fixes */
                 writing-mode: horizontal-tb !important;
                 text-orientation: mixed !important;
                 transform: none !important;
-                vertical-align: middle !important;
+                
+                /* Effects */
+                background-size: 200% auto !important;
+                transition: all 0.4s ease-in-out !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                cursor: pointer !important;
             }
 
+            /* Hover effect - KEEP WHITE TEXT */
             div[data-testid="column"] .stButton > button:hover {
                 background-position: right center !important;
-                transform: scale(1.05) !important;
-                box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6) !important;
-                transition: 0.3s ease-in-out !important;
-                color: black !important;
+                transform: translateY(-3px) scale(1.02) !important;
+                box-shadow: 0 6px 20px rgba(161, 140, 209, 0.4) !important;
+                color: white !important;
+            }
+            
+            /* Active/Clicked state - KEEP WHITE TEXT */
+            div[data-testid="column"] .stButton > button:active {
+                transform: translateY(-1px) !important;
+                color: white !important;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -391,7 +412,7 @@ def run_summarization(content):
     
     for idx, (section_key, section_title) in enumerate(summarization_sections.items()):
         with cols[idx]:  # Place buttons inside columns
-            if st.button(section_title, key=f"btn_{section_key}"):
+            if st.button(section_title, key=f"btn_{section_key}", use_container_width=True):
                 with st.spinner(f"📝 Processing {section_title}..."):
                     section_value = get_section_prompt(section_title)
                     
@@ -490,20 +511,40 @@ def main():
                 default_index=0
             )
             
-            # ADD THE SIDEBAR TOGGLE FIX
+            # Add manual sidebar toggle button if sidebar is collapsed
+            if 'sidebar_state' not in st.session_state:
+                st.session_state.sidebar_state = 'expanded'
+            
+            # Create a floating button to toggle sidebar
             st.markdown("""
-                <script>
-                // Ensure sidebar toggle button is always visible
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    [data-testid="collapsedControl"] {
-                        display: block !important;
-                        visibility: visible !important;
-                        opacity: 1 !important;
-                    }
-                `;
-                document.head.appendChild(style);
-                </script>
+                <style>
+                .sidebar-toggle-btn {
+                    position: fixed;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 999999;
+                    background: linear-gradient(45deg, #6a11cb, #8e44ad);
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                }
+                .sidebar-toggle-btn:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 6px 16px rgba(106, 17, 203, 0.5);
+                }
+                </style>
+                <button class="sidebar-toggle-btn" onclick="document.querySelector('[data-testid=\\'stSidebar\\']').style.display = document.querySelector('[data-testid=\\'stSidebar\\']').style.display === 'none' ? 'block' : 'none'">
+                    ☰
+                </button>
             """, unsafe_allow_html=True)
         
         # Check before redirecting to Summarization mode

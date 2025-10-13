@@ -182,7 +182,7 @@ button[kind="primaryFormSubmit"]:active {
 div[data-testid="stElementContainer"] .stButton button {
     background-color: transparent !important;
     border: 2px solid #cba4ff !important;
-    color: #6a11cb !important;
+    color: white !important;
     border-radius: 8px !important;
     padding: 10px 18px !important;
     font-size: 15px !important;

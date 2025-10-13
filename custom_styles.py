@@ -219,7 +219,7 @@ def apply_custom_css():
             /* 🔘 Elegant Button Styling */
             .stButton > button:not(.stFormSubmitButton button) {
                 background: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
-                color: white;
+                color: white !important;
                 font-size: 18px;
                 font-weight: bold;
                 padding: 12px 30px;
