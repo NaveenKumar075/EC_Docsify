@@ -17,7 +17,7 @@ def apply_custom_css():
                 to { opacity: 1; transform: translateY(0); }
             }
 
-            /* 📌 EXTENDED SIDEBAR - NO TEXT WRAPPING */
+            /* EXTENDED SIDEBAR - ALWAYS VISIBLE, NO TEXT WRAPPING */
             [data-testid="stSidebar"] {
                 background: linear-gradient(to bottom, #f1f3f5, #ffffff);
                 color: #2c3e50;
@@ -26,12 +26,42 @@ def apply_custom_css():
                 min-width: 280px !important;
                 max-width: 320px !important;
                 width: 300px !important;
+                display: block !important;
+                visibility: visible !important;
+                margin-left: 0 !important;
+                transform: translateX(0) !important;
+                position: relative !important;
             }
             
-            /* Fix collapsed sidebar - Add toggle button */
-            [data-testid="stSidebar"][aria-expanded="false"] {
-                min-width: 0 !important;
-                width: 0 !important;
+            /* Force sidebar to never collapse */
+            [data-testid="stSidebar"][aria-expanded="false"],
+            [data-testid="stSidebar"][aria-expanded="true"] {
+                display: block !important;
+                visibility: visible !important;
+                margin-left: 0 !important;
+                transform: translateX(0) !important;
+            }
+            
+            /* Hide ALL collapse buttons */
+            button[kind="header"],
+            [data-testid="collapsedControl"],
+            button[data-testid="baseButton-header"],
+            button[aria-label="Close sidebar"] {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+            
+            /* Adjust main content area */
+            .main .block-container {
+                padding-left: 1rem !important;
+                max-width: 100% !important;
+            }
+            
+            /* Ensure proper spacing */
+            section[data-testid="stSidebar"] ~ div {
+                margin-left: 0 !important;
             }
             
             /* Sidebar collapse button visibility */
