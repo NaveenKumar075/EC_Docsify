@@ -466,9 +466,6 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-        st.title("Welcome to EC Docsify!")
-        st.write("AI-Driven Accuracy, Simplified EC Verification.")
-        
         with st.sidebar:
             st.sidebar.markdown(
             """
@@ -568,26 +565,21 @@ def main():
         
         # ========== WELCOME PAGE - ADD THIS SECTION HERE ==========
         if selected == 'Welcome':
-            # Logo at top right corner with proper styling
+            # Logo styling - smaller size
             st.markdown("""
                 <style>
                 .welcome-logo {
                     position: fixed;
-                    top: 20px;
-                    right: 20px;
+                    top: 15px;
+                    right: 25px;
                     z-index: 999;
-                    width: 150px;
+                    width: 80px;
                     height: auto;
                     filter: drop-shadow(0px 4px 10px rgba(106, 17, 203, 0.3));
                     transition: transform 0.3s ease;
                 }
                 .welcome-logo:hover {
-                    transform: scale(1.08);
-                }
-                
-                /* Hide default Streamlit header if needed */
-                header[data-testid="stHeader"] {
-                    background: transparent;
+                    transform: scale(1.1);
                 }
                 </style>
             """, unsafe_allow_html=True)
@@ -597,8 +589,8 @@ def main():
             try:
                 logo_base64 = img_to_bytes(logo_path)
                 st.markdown(f'<img src="data:image/png;base64,{logo_base64}" class="welcome-logo" alt="Yeecy.ai Logo">', unsafe_allow_html=True)
-            except Exception as e:
-                st.warning(f"Logo not found at {logo_path}")
+            except:
+                pass
             
             # Hero Section
             st.markdown("""
@@ -648,73 +640,68 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
             
-            # Features Grid
-            st.markdown("""
-                <div style="
-                    display: grid; 
-                    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-                    gap: 1.5rem; 
-                    margin: 3rem auto;
-                    max-width: 1200px;
-                    padding: 0 1rem;
-                ">
-                    <!-- Feature Card 1 -->
+            # Features Grid - NO COMMENTS
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("""
                     <div style="
                         background: white;
                         padding: 2rem;
                         border-radius: 12px;
                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                        transition: all 0.3s ease;
                         border-left: 4px solid #6a11cb;
+                        margin-bottom: 1.5rem;
                     ">
                         <div style="font-size: 2.5rem; margin-bottom: 1rem;">📤</div>
                         <h3 style="color: #6a11cb; margin-bottom: 0.8rem; font-size: 1.3rem; font-weight: 600;">Effortless Verification</h3>
                         <p style="color: #666; line-height: 1.6; margin: 0; font-size: 1rem;">Upload your EC in PDF format for instant analysis.</p>
                     </div>
-                    
-                    <!-- Feature Card 2 -->
+                """, unsafe_allow_html=True)
+                
+                st.markdown("""
                     <div style="
                         background: white;
                         padding: 2rem;
                         border-radius: 12px;
                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                        transition: all 0.3s ease;
-                        border-left: 4px solid #8e44ad;
-                    ">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
-                        <h3 style="color: #8e44ad; margin-bottom: 0.8rem; font-size: 1.3rem; font-weight: 600;">Save Time</h3>
-                        <p style="color: #666; line-height: 1.6; margin: 0; font-size: 1rem;">Get results in minutes with AI-powered precision.</p>
-                    </div>
-                    
-                    <!-- Feature Card 3 -->
-                    <div style="
-                        background: white;
-                        padding: 2rem;
-                        border-radius: 12px;
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                        transition: all 0.3s ease;
                         border-left: 4px solid #6a11cb;
                     ">
                         <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
                         <h3 style="color: #6a11cb; margin-bottom: 0.8rem; font-size: 1.3rem; font-weight: 600;">Secure Management</h3>
                         <p style="color: #666; line-height: 1.6; margin: 0; font-size: 1rem;">Safely store and access all your ECs in one place.</p>
                     </div>
-                    
-                    <!-- Feature Card 4 -->
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("""
                     <div style="
                         background: white;
                         padding: 2rem;
                         border-radius: 12px;
                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                        transition: all 0.3s ease;
+                        border-left: 4px solid #8e44ad;
+                        margin-bottom: 1.5rem;
+                    ">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
+                        <h3 style="color: #8e44ad; margin-bottom: 0.8rem; font-size: 1.3rem; font-weight: 600;">Save Time</h3>
+                        <p style="color: #666; line-height: 1.6; margin: 0; font-size: 1rem;">Get results in minutes with AI-powered precision.</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                st.markdown("""
+                    <div style="
+                        background: white;
+                        padding: 2rem;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
                         border-left: 4px solid #8e44ad;
                     ">
                         <div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
                         <h3 style="color: #8e44ad; margin-bottom: 0.8rem; font-size: 1.3rem; font-weight: 600;">Interactive Insights</h3>
                         <p style="color: #666; line-height: 1.6; margin: 0; font-size: 1rem;">Ask questions within the document for instant answers.</p>
                     </div>
-                </div>
-            """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
             
             # Call to Action Banner
             st.markdown("""
