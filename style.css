@@ -119,76 +119,92 @@
     font-size: 0.95rem;
 }
 
-/* Button styling */
-.stFormSubmitButton > button {
-    background: linear-gradient(45deg, #994aed, #c269e9);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 18px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 50%;
-    margin-top: 0.5rem;
-    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
-    writing-mode: horizontal-tb !important;
-    text-orientation: mixed !important;
-    display: block !important;
-    text-align: center !important;
-}
-
-/* Center the submit button container */
-.stFormSubmitButton {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.stFormSubmitButton > button:hover {
-    background: linear-gradient(45deg, #5a0cb6, #7d3c9c);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(106, 17, 203, 0.3);
-    color: white;
-}
-
-.stFormSubmitButton > button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(106, 17, 203, 0.3);
-    color: white;
-}
-
-/* Switch button */
-.stTooltipHoverTarget {
-    background-color: transparent;
-    border: 2px solid #cba4ff;
-    color: #6a11cb;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: none;
-}
-
-.stTooltipHoverTarget:hover {
-    background-color: #f3e9ff;
-    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.1);
-    transform: scale(1.03);
-}
-
-/* Reset button orientation everywhere */
-div.stButton > button {
+/* ===== CRITICAL: SIGN IN/UP BUTTON FIX ===== */
+/* Target ALL form submit buttons with maximum specificity */
+div[data-testid="stForm"] button[kind="primaryFormSubmit"],
+div[data-testid="stForm"] .stFormSubmitButton button,
+.stFormSubmitButton > button,
+button[kind="primaryFormSubmit"] {
+    background: linear-gradient(45deg, #994aed, #c269e9) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    max-width: 200px !important;
+    margin: 0.5rem auto !important;
+    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2) !important;
+    
+    /* CRITICAL: Force horizontal orientation */
     writing-mode: horizontal-tb !important;
     text-orientation: mixed !important;
     transform: none !important;
+    display: inline-block !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    line-height: normal !important;
+    vertical-align: middle !important;
+}
+
+/* Center the submit button container */
+div[data-testid="stForm"] .stFormSubmitButton,
+.stFormSubmitButton {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+/* Hover effect for form buttons */
+div[data-testid="stForm"] button[kind="primaryFormSubmit"]:hover,
+.stFormSubmitButton > button:hover,
+button[kind="primaryFormSubmit"]:hover {
+    background: linear-gradient(45deg, #5a0cb6, #7d3c9c) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(106, 17, 203, 0.3) !important;
+    color: white !important;
+}
+
+/* Active state */
+div[data-testid="stForm"] button[kind="primaryFormSubmit"]:active,
+.stFormSubmitButton > button:active,
+button[kind="primaryFormSubmit"]:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 5px rgba(106, 17, 203, 0.3) !important;
+    color: white !important;
+}
+
+/* Switch button */
+.stButton > button[data-testid="baseButton-secondary"],
+div[data-testid="stElementContainer"] .stButton button {
+    background-color: transparent !important;
+    border: 2px solid #cba4ff !important;
+    color: #6a11cb !important;
+    border-radius: 8px !important;
+    padding: 10px 18px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
     white-space: nowrap !important;
 }
 
-/* Center the full Streamlit button container */
-div[data-testid="stElementContainer"][class*="key-to_signup"] {
+.stButton > button[data-testid="baseButton-secondary"]:hover,
+div[data-testid="stElementContainer"] .stButton button:hover {
+    background-color: #f3e9ff !important;
+    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.1) !important;
+    transform: scale(1.03) !important;
+}
+
+/* Center switch buttons */
+div[data-testid="stElementContainer"][class*="key-to_signup"],
+div[data-testid="stElementContainer"][class*="key-to_signin"] {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -196,39 +212,11 @@ div[data-testid="stElementContainer"][class*="key-to_signup"] {
     width: 100% !important;
 }
 
-/* Target the inner button wrapper */
-div[data-testid="stElementContainer"][class*="key-to_signup"] .stButton {
+div[data-testid="stElementContainer"][class*="key-to_signup"] .stButton,
+div[data-testid="stElementContainer"][class*="key-to_signin"] .stButton {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
-}
-
-/* Style the button inside */
-div[data-testid="stElementContainer"][class*="key-to_signup"] button {
-    background: white !important;
-    color: #6a11cb !important;
-    border: 2px solid #6a11cb !important;
-    border-radius: 8px !important;
-    padding: 0.6rem 1.2rem !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 2px 4px rgba(106, 17, 203, 0.2) !important;
-    width: auto !important;
-    min-width: 220px !important;
-}
-
-/* Hover effect */
-div[data-testid="stElementContainer"][class*="key-to_signup"] button:hover {
-    background: #f0eaff !important;
-    color: #8e44ad !important;
-    box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3) !important;
-    transform: translateY(-2px) !important;
-}
-
-div[data-testid="stElementContainer"][class*="key-to_signup"] {
-    animation: fadeInUp 0.6s ease;
 }
 
 /* Notification styling */
@@ -258,7 +246,6 @@ div[data-testid="stElementContainer"][class*="key-to_signup"] {
     color: #dc3545;
     margin: 0;
 }
-
 
 /* Animation classes */
 @keyframes slideIn {
@@ -292,28 +279,10 @@ div[data-testid="stElementContainer"][class*="key-to_signup"] {
     }
 }
 
-.animate-slide {
-    animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    opacity: 0;
-}
-
-.animate-fade {
-    animation: fadeIn 0.8s ease forwards;
-    opacity: 0;
-}
-
-/* Staggered animations for form elements */
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-
-
 /* Hide Streamlit branding */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
-
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {

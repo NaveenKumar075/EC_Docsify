@@ -296,50 +296,57 @@ def upload_to_drive(file, username):
 def summarization_custom_css():
     st.markdown("""
         <style>
-            /* Ensure columns maintain proper width */
+            /* Force equal column widths */
             div[data-testid="column"] {
-                min-width: 0;
-                flex: 1;
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                max-width: none !important;
             }
             
-            /* Summarization buttons styling */
+            /* Summarization buttons - PERMANENT FIX */
             div[data-testid="column"] .stButton {
-                width: 100%;
+                width: 100% !important;
+                display: block !important;
             }
             
             div[data-testid="column"] .stButton > button {
-                background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
-                color: white;
-                font-size: 13px;
-                font-weight: bold;
-                padding: 12px 8px;
-                text-transform: none;
-                border: none;
-                border-radius: 15px;
-                background-size: 200% auto;
-                transition: 0.5s ease-in-out;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                cursor: pointer;
+                background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%) !important;
+                color: white !important;
+                font-size: 13px !important;
+                font-weight: bold !important;
+                padding: 12px 8px !important;
+                text-transform: none !important;
+                border: none !important;
+                border-radius: 15px !important;
+                background-size: 200% auto !important;
+                transition: 0.5s ease-in-out !important;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+                width: 100% !important;
+                cursor: pointer !important;
+                
+                /* CRITICAL: Force horizontal text */
                 white-space: normal !important;
                 word-wrap: break-word !important;
-                min-height: 70px;
-                height: auto;
-                line-height: 1.3;
+                word-break: break-word !important;
+                min-height: 70px !important;
+                height: auto !important;
+                line-height: 1.3 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                text-align: center;
+                text-align: center !important;
                 writing-mode: horizontal-tb !important;
                 text-orientation: mixed !important;
+                transform: none !important;
+                vertical-align: middle !important;
             }
 
             div[data-testid="column"] .stButton > button:hover {
-                background-position: right center;
-                transform: scale(1.05);
-                box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6);
-                transition: 0.3s ease-in-out;
-                color: black;
+                background-position: right center !important;
+                transform: scale(1.05) !important;
+                box-shadow: 6px 6px 16px rgba(161, 140, 209, 0.6) !important;
+                transition: 0.3s ease-in-out !important;
+                color: black !important;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -482,6 +489,22 @@ def main():
                 "nav-link-selected": {"background-color": "#8AAAE5"}},
                 default_index=0
             )
+            
+            # ADD THE SIDEBAR TOGGLE FIX
+            st.markdown("""
+                <script>
+                // Ensure sidebar toggle button is always visible
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    [data-testid="collapsedControl"] {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                    }
+                `;
+                document.head.appendChild(style);
+                </script>
+            """, unsafe_allow_html=True)
         
         # Check before redirecting to Summarization mode
         if selected == "Summarization":
