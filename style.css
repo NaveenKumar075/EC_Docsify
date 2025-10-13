@@ -135,10 +135,15 @@
     box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
     writing-mode: horizontal-tb !important;
     text-orientation: mixed !important;
-    white-space: nowrap !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: block !important;
+    text-align: center !important;
+}
+
+/* Center the submit button container */
+.stFormSubmitButton {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .stFormSubmitButton > button:hover {

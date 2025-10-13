@@ -296,26 +296,23 @@ def upload_to_drive(file, username):
 def summarization_custom_css():
     st.markdown("""
         <style>
-            /* Center-align buttons container */
+            /* Ensure columns maintain proper width */
             div[data-testid="column"] {
-                display: flex;
-                justify-content: center;
-                align-items: stretch;
+                min-width: 0;
+                flex: 1;
             }
             
             /* Summarization buttons styling */
             div[data-testid="column"] .stButton {
                 width: 100%;
-                display: flex;
-                justify-content: center;
             }
             
             div[data-testid="column"] .stButton > button {
                 background-image: linear-gradient(to right, #ff9a9e 0%, #fad0c4 51%, #a18cd1 100%);
                 color: white;
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: bold;
-                padding: 15px 10px;
+                padding: 12px 8px;
                 text-transform: none;
                 border: none;
                 border-radius: 15px;
@@ -326,13 +323,15 @@ def summarization_custom_css():
                 cursor: pointer;
                 white-space: normal !important;
                 word-wrap: break-word !important;
-                min-height: 80px;
-                line-height: 1.4;
+                min-height: 70px;
+                height: auto;
+                line-height: 1.3;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 text-align: center;
                 writing-mode: horizontal-tb !important;
+                text-orientation: mixed !important;
             }
 
             div[data-testid="column"] .stButton > button:hover {
@@ -385,7 +384,7 @@ def run_summarization(content):
     
     for idx, (section_key, section_title) in enumerate(summarization_sections.items()):
         with cols[idx]:  # Place buttons inside columns
-            if st.button(section_title, key=f"btn_{section_key}", use_container_width=True):
+            if st.button(section_title, key=f"btn_{section_key}"):
                 with st.spinner(f"📝 Processing {section_title}..."):
                     section_value = get_section_prompt(section_title)
                     
