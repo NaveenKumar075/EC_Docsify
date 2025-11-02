@@ -445,44 +445,6 @@ def run_summarization(content):
             result = st.session_state.processed_results.get(section_key, "")
             if result:
                 with st.expander(section_title, expanded=True):
-                    # Apply custom HTML styling for Document Remarks alignment
-                    if section_key == "document_remarks":
-                        st.markdown("""
-                            <style>
-                                .remark-box {
-                                    background: #f9f9ff;
-                                    padding: 10px 15px;
-                                    border-left: 4px solid #6a11cb;
-                                    border-radius: 6px;
-                                    margin-bottom: 10px;
-                                    line-height: 1.6;
-                                    text-align: justify;
-                                    font-size: 15px;
-                                    color: #333;
-                                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-                                }
-                            </style>
-                        """, unsafe_allow_html=True)
-
-                        # Detect and normalize the remarks correctly
-                        if isinstance(result, str):
-                            remarks = [r.strip() for r in result.split("\n") if r.strip()]
-                        elif isinstance(result, list):
-                            joined = " ".join(map(str, result))
-                            remarks = [r.strip() for r in joined.split("\n") if r.strip()]
-                        else:
-                            remarks = [str(result)]
-
-                        # Render nicely formatted remarks
-                        formatted_html = "".join(
-                            f"<div class='remark-box'>{r}</div>" for r in remarks
-                        )
-
-                        st.markdown(f"**🔍 Processed {section_title}**", unsafe_allow_html=True)
-                        st.markdown(formatted_html, unsafe_allow_html=True)
-                    
-                    # Default layout for all other sections
-                    else:
                         st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
         
         
