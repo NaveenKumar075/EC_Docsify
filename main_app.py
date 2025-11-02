@@ -817,7 +817,11 @@ def main():
     <div style="text-align: center; margin-top: auto; color: #666; font-size: 1.0rem; padding: 1rem 0; animation: fadeIn 1s ease forwards 1s; opacity: 0;">
         <a href="https://yeecy-ai.streamlit.app/" style="color: #6a11cb; text-decoration: none; font-weight: 600;">
             Yeecy.ai ❤️ 
-        </a> | Copyrights Reserved © 2025
+        </a>
+        <span style="background-color: #6a11cb; color: white; border-radius: 6px; padding: 2px 6px; font-size: 0.8rem; margin-left: 6px;">
+            Beta Version
+        </span>
+        | © 2025 All Rights Reserved
     </div>
     """, unsafe_allow_html=True)
 
