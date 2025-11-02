@@ -451,20 +451,24 @@ def run_summarization(content):
                             </style>
                         """, unsafe_allow_html=True)
 
-                        # Ensure result is always in list form
+                        # Detect and normalize the remarks correctly
                         if isinstance(result, str):
-                            remarks = result.split("\n\n")
+                            remarks = [r.strip() for r in result.split("\n") if r.strip()]
+                        elif isinstance(result, list):
+                            joined = " ".join(map(str, result))
+                            remarks = [r.strip() for r in joined.split("\n") if r.strip()]
                         else:
-                            remarks = result
+                            remarks = [str(result)]
 
-                        # Render all remarks in consistent alignment
-                        formatted = "".join(
-                            f"<div class='remark-box'>{r.strip()}</div>" for r in remarks if r.strip()
+                        # Render nicely formatted remarks
+                        formatted_html = "".join(
+                            f"<div class='remark-box'>{r}</div>" for r in remarks
                         )
+
                         st.markdown(f"**🔍 Processed {section_title}**", unsafe_allow_html=True)
-                        st.markdown(formatted, unsafe_allow_html=True)
+                        st.markdown(formatted_html, unsafe_allow_html=True)
                     
-                    # Default rendering for other sections
+                    # Default layout for all other sections
                     else:
                         st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
         
