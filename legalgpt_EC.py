@@ -247,7 +247,10 @@ def extract_all_document_remarks(extracted_text):
         for remark in extracted_results:
             # Remove "Document Remarks..." prefix completely
             remark = re.sub(
-                r"Document Remarks\s*\(?.*?\)?:?", "", remark, flags=re.IGNORECASE
+                r"Document\s*Remarks\s*/\s*ஆவணக் குறிப்புகள்\s*:?",
+                "",
+                remark,
+                flags=re.IGNORECASE
             ).strip()
             # Remove empty lines or meaningless short fragments
             if remark and len(remark) > 3:
