@@ -432,7 +432,41 @@ def run_summarization(content):
             result = st.session_state.processed_results.get(section_key, "")
             if result:
                 with st.expander(section_title, expanded=True):
-                    st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
+                    # Apply custom HTML styling for Document Remarks alignment
+                    if section_key == "document_remarks":
+                        st.markdown("""
+                            <style>
+                                .remark-box {
+                                    background: #f9f9ff;
+                                    padding: 10px 15px;
+                                    border-left: 4px solid #6a11cb;
+                                    border-radius: 6px;
+                                    margin-bottom: 10px;
+                                    line-height: 1.6;
+                                    text-align: justify;
+                                    font-size: 15px;
+                                    color: #333;
+                                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                                }
+                            </style>
+                        """, unsafe_allow_html=True)
+
+                        # Ensure result is always in list form
+                        if isinstance(result, str):
+                            remarks = result.split("\n\n")
+                        else:
+                            remarks = result
+
+                        # Render all remarks in consistent alignment
+                        formatted = "".join(
+                            f"<div class='remark-box'>{r.strip()}</div>" for r in remarks if r.strip()
+                        )
+                        st.markdown(f"**🔍 Processed {section_title}**", unsafe_allow_html=True)
+                        st.markdown(formatted, unsafe_allow_html=True)
+                    
+                    # Default rendering for other sections
+                    else:
+                        st.markdown(f"**🔍 Processed {section_title}**\n\n{result}")
         
         
 # Streamlit UI setup

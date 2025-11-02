@@ -168,6 +168,20 @@ def apply_custom_css():
                 overflow: hidden;
                 white-space: nowrap;
             }
+            
+            /* Document Remarks Formatting */
+            .remark-box {
+                background: #f9f9ff;
+                border-left: 4px solid #6a11cb;
+                border-radius: 6px;
+                padding: 10px 15px;
+                margin: 8px 0;
+                text-align: justify;
+                line-height: 1.6;
+                font-size: 15px;
+                color: #333;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
 
             /* Hover Effect */
             .main-menu-item::before {
