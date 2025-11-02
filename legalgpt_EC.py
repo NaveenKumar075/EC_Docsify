@@ -240,8 +240,8 @@ def extract_all_document_remarks(extracted_text):
                     extracted_results.append(sliced_content.strip())
 
     if extracted_results:
-        formatted_output = "### Document Remarks (ஆவணக் குறிப்புகள்):\n\n"
-        formatted_output += "\n".join([f"- {remark.split(':')[-1].strip()}" for remark in extracted_results])  
+        # formatted_output = "### Document Remarks (ஆவணக் குறிப்புகள்):\n\n"
+        formatted_output = "\n".join([f"- {remark.split(':')[-1].strip()}" for remark in extracted_results])
         return formatted_output
     else:
         return "No Document Remarks Found."
