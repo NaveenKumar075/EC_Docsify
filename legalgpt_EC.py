@@ -241,8 +241,21 @@ def extract_all_document_remarks(extracted_text):
 
     if extracted_results:
         # formatted_output = "### Document Remarks (ஆவணக் குறிப்புகள்):\n\n"
-        formatted_output = "\n".join([f"- {remark.split(':')[-1].strip()}" for remark in extracted_results])
-        return formatted_output
+        # formatted_output = "\n".join([f"- {remark.split(':')[-1].strip()}" for remark in extracted_results])
+        cleaned_texts = []
+
+        for remark in extracted_results:
+            # Remove "Document Remarks..." prefix completely
+            remark = re.sub(
+                r"Document Remarks\s*\(?.*?\)?:?", "", remark, flags=re.IGNORECASE
+            ).strip()
+            # Remove empty lines or meaningless short fragments
+            if remark and len(remark) > 3:
+                cleaned_texts.append(remark)
+
+        # ✅ Merge all remarks into one paragraph
+        merged_output = " ".join(cleaned_texts)
+        return merged_output.strip()
     else:
         return "No Document Remarks Found."
 
