@@ -418,7 +418,20 @@ def run_summarization(content):
                     
                     if callable(section_value):
                         remarks_list = section_value(content)
-                        response = "\n\n".join(remarks_list)
+                        # Normalize remarks properly before joining
+                        if isinstance(remarks_list, str):
+                            clean_remarks = [remarks_list.strip()]
+                        elif isinstance(remarks_list, list):
+                            clean_remarks = []
+                            for r in remarks_list:
+                                if isinstance(r, list):
+                                    clean_remarks.extend([str(x).strip() for x in r if x])
+                                elif isinstance(r, str):
+                                    clean_remarks.append(r.strip())
+                        else:
+                            clean_remarks = [str(remarks_list).strip()]
+
+                        response = "\n\n".join(clean_remarks).strip()
                     else:
                         retrieved_chunks = retrieving_process(content, section_value)
                         reranked_docs = rerank_documents(retrieved_chunks, section_value)
